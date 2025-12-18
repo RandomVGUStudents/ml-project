@@ -1,0 +1,207 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.18.4"
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "f60c2e70ee2a2d1f86b6aa881a21e9a4",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"data-acquisition-preprocessing\">Data acquisition &amp; preprocessing</h1></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "8e33225343ce0025ad04a4f8a9801640",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"import-some-libs\">Import some libs</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "f99cc5e1c2c6ac511dbcafe824ca6be2",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "2fd252841841ec16f581e200509f0788",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"download-dataset\">Download dataset</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "15dbc1336ecb8131c29def12e360902d",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "8ce86c86f7fae338ff1b1e625e06059d",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "94424fcd9e784d416c5836aa902a286a",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "51e8af354e952de759aa8cf1982e3d37",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "22999478449f49db36ab318e281720e5",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "6279e0994ad058410085c06902a6b9b8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"viewing-some-emails\">Viewing some emails</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "be2ea9264daaf47e6769328f2a118525",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "7f9bec28bc8902d45d905788d7aa59a1",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='Kclp-0' random-id='04c08d45-1a76-98ef-a261-abe1a2c45ce0'><marimo-number data-initial-value='0' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Number&lt;/span&gt;&lt;/span&gt;&quot;' data-start='0' data-stop='6045' data-debounce='false' data-full-width='false' data-disabled='false'></marimo-number></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "ced1ac473e82404f6530e517fcb635bf",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "./datasets\\easy_ham\\00070.c62a036deb1de40aa32cabc761b0861c\nRe: The case for spam\n---\nBill Stoddard wrote:\n\n>>No one likes commercial spam. \n>>    \n>>\n>And no one like unsolicited political spam. End of story.\n>\n>Bill \n>http://xent.com/mailman/listinfo/fork\n>  \n>\nExcept perhaps for the people in charge.\nOwen\n\nhttp://zdnet.com.com/2100-1105-954903.html\n\n\n*Political spam on your cell phone?*\nBy Lisa M. Bowman <mailto:lisa.bowman@cnet.com>\nSpecial to ZDNet News\nAugust 22, 2002, 12:05 PM PT\nURL: http://zdnet.com.com/2100-1105-954909.html \n<%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20http://zdnet.com.com/2100-1105-954909.html%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20> \n\n\n*In a decision that treats text messaging on mobile phones essentially \nthe same as bumper stickers, the Federal Election Commission has \ndeclared that senders of text-based political ads don't have to disclose \nwho funded them.*\n\nIn an advisory opinion issued Thursday, the FEC also suggested such \nmessages include either a phone number or Web site link, so people could \neasily learn who paid for the message. However, the additional \ninformation won't be required.\n\nThe opinion could encourage the adoption of text-based political ads, as \ncampaign experts look for new technological ways to sway voters. At the \nsame time, opponents of the plan fear it could lead to anonymous \npolitical spam.\n\nTarget Wireless, a small New Jersey-based wireless media company, had \nasked the FEC for an opinion on the matter, saying that requiring \nfinancial disclosures on short messaging service (SMS) mailings would \nuse up too much of the 160 character-maximum.\n\nPolitical messages on bumper stickers and buttons are also exempt from \nthe financial disclosure requirement. Target Wireless' petition was \nsupported by the National Republican Senatorial Committee, the Cellular \nTelecommunications and Internet Association, and some advertising trade \ngroups.\n\nFEC spokesman Bob Biersack said the opinion was in keeping with the \ncommission's policy not to meddle with new technology that has the \npotential to reach more voters.\n\n\"We have tried very hard not to get in the way--particularly before \neveryone understands how the technology is going to work,\" he said.\n\nOpponents of the plan have worried the exemption might encourage spam or \nallow senders to blast people with mass amounts of negative political \nmessages while remaining anonymous.\n\nBiersack said the FEC can revisit the issue if those problems surface.\n\nTarget Wireless President Craig Krueger characterized the opinion as \n\"good for America.\"\n\n\"It will allow people to receive more communication from those running \nfor office,\" he said. \"We have free speech on our side.\"\n\n\n\n\n---\n['Bill Stoddard wrote:\\n\\n>>No one likes commercial spam. \\n>>    \\n>>\\n>And no one like unsolicited political spam. End of story.\\n>\\n>Bill \\n>http://xent.com/mailman/listinfo/fork\\n>  \\n>\\nExcept perhaps for the people in charge.\\nOwen\\n\\nhttp://zdnet.com.com/2100-1105-954903.html\\n\\n\\n*Political spam on your cell phone?*\\nBy Lisa M. Bowman <mailto:lisa.bowman@cnet.com>\\nSpecial to ZDNet News\\nAugust 22, 2002, 12:05 PM PT\\nURL: http://zdnet.com.com/2100-1105-954909.html \\n<%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20http://zdnet.com.com/2100-1105-954909.html%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20> \\n\\n\\n*In a decision that treats text messaging on mobile phones essentially \\nthe same as bumper stickers, the Federal Election Commission has \\ndeclared that senders of text-based political ads don\\'t have to disclose \\nwho funded them.*\\n\\nIn an advisory opinion issued Thursday, the FEC also suggested such \\nmessages include either a phone number or Web site link, so people could \\neasily learn who paid for the message. However, the additional \\ninformation won\\'t be required.\\n\\nThe opinion could encourage the adoption of text-based political ads, as \\ncampaign experts look for new technological ways to sway voters. At the \\nsame time, opponents of the plan fear it could lead to anonymous \\npolitical spam.\\n\\nTarget Wireless, a small New Jersey-based wireless media company, had \\nasked the FEC for an opinion on the matter, saying that requiring \\nfinancial disclosures on short messaging service (SMS) mailings would \\nuse up too much of the 160 character-maximum.\\n\\nPolitical messages on bumper stickers and buttons are also exempt from \\nthe financial disclosure requirement. Target Wireless\\' petition was \\nsupported by the National Republican Senatorial Committee, the Cellular \\nTelecommunications and Internet Association, and some advertising trade \\ngroups.\\n\\nFEC spokesman Bob Biersack said the opinion was in keeping with the \\ncommission\\'s policy not to meddle with new technology that has the \\npotential to reach more voters.\\n\\n\"We have tried very hard not to get in the way--particularly before \\neveryone understands how the technology is going to work,\" he said.\\n\\nOpponents of the plan have worried the exemption might encourage spam or \\nallow senders to blast people with mass amounts of negative political \\nmessages while remaining anonymous.\\n\\nBiersack said the FEC can revisit the issue if those problems surface.\\n\\nTarget Wireless President Craig Krueger characterized the opinion as \\n\"good for America.\"\\n\\n\"It will allow people to receive more communication from those running \\nfor office,\" he said. \"We have free speech on our side.\"\\n\\n\\n\\n']\n---\n[]\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "iLit",
+      "code_hash": "ec5489c8a2c8cac5df72d86bea05ff89",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"preprocess-emails\">Preprocess emails</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "f32097847374a482211e27eaa6e5c095",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "379f467fd25de3f4c63408cac11ff612",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"load-whole-dataset\">Load whole dataset</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "1f205506bb16beca34b6558025d3c4a8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"random-stuff-imports\">Random stuff imports</h1></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}
