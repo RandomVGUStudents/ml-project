@@ -44,6 +44,32 @@
       "console": []
     },
     {
+      "id": "lEQa",
+      "code_hash": "286c00fc5a2b3016ac8646bee7a44ccf",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"define-dataset-source\">Define dataset source</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "6cc6d9dc250d56d24ad4d505b0f9c481",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"check-dataset-integrity\">Check dataset integrity</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
       "id": "RGSE",
       "code_hash": "6279e0994ad058410085c06902a6b9b8",
       "outputs": [
@@ -70,26 +96,130 @@
       "console": []
     },
     {
-      "id": "qnkX",
-      "code_hash": "ec5489c8a2c8cac5df72d86bea05ff89",
+      "id": "ZHCJ",
+      "code_hash": "7c39e65e5323cb3dfdf5ff86b45186fb",
       "outputs": [
         {
           "type": "data",
           "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"preprocess-emails\">Preprocess emails</h2></span>"
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"preprocess-email\">Preprocess email</h2></span>"
           }
         }
       ],
       "console": []
     },
     {
-      "id": "TqIu",
-      "code_hash": "1f205506bb16beca34b6558025d3c4a8",
+      "id": "ROlb",
+      "code_hash": "500633eed157556cf3d7c9cab121d66a",
       "outputs": [
         {
           "type": "data",
           "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"random-stuff-imports\">Random stuff imports</h1></span>"
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"data-exploration-notes\">Data exploration notes</h3>\n<ul>\n<li>High correlation: HTML usage and spam</li>\n<li>Dataset artifact: a lot of spam emails have this:</li>\n</ul>\n<div class=\"language-text codehilite\"><pre><span></span><code>--DeathToSpamDeathToSpamDeathToSpam--\n</code></pre></div>\n<ul>\n<li>There might be (mostly in spam emails) forms with <code>_____</code> blanks.</li>\n<li>Mailing list footer should be removed, they mostly appear in ham emails.</li>\n</ul>\n<div class=\"language-text codehilite\"><pre><span></span><code>-------------------------------------------------------\nThis sf.net email is sponsored by:ThinkGeek\nWelcome to geek heaven.\nhttp://thinkgeek.com/sf\n_______________________________________________\nSpamassassin-talk mailing list\nSpamassassin-talk@lists.sourceforge.net\nhttps://lists.sourceforge.net/lists/listinfo/spamassassin-talk\n</code></pre></div></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "4456249f139ef540709b4be5660c014c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"remove-duplicates\">Remove duplicates</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "2fa90d78d289af96821e68120153614f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"pre-cleanup\">Pre-cleanup</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ulZA",
+      "code_hash": "c19d604ea401bc93f33824bf1c5e557b",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"html-cleanup\">HTML cleanup</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZBYS",
+      "code_hash": "9bf463e7b9fba8131a6ead757eca4eea",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"text-cleanup\">Text cleanup</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nHfw",
+      "code_hash": "47ca681e3a3e6ce3802d4ccb8c91c7f4",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"features-engineering\">Features engineering</h1></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "xXTn",
+      "code_hash": "789b75da697708b51e3d547c4779bd89",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"additional-features-to-consider\">Additional features to consider</h2>\n<ul>\n<li>Contains HTML (boolean)</li>\n<li>Number of links</li>\n<li>Number of special characters</li>\n<li>Captials ratio</li>\n<li>Email size</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "AjVT",
+      "code_hash": "82b1d433f45399fd6077e2af5ddc8f49",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"random-stuff\">Random stuff</h1></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "aqbW",
+      "code_hash": "a043d2ac40d190c054ee013d3587a101",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"beautiful-soup-playground\">Beautiful Soup playground</h2></span>"
           }
         }
       ],
@@ -97,7 +227,7 @@
     },
     {
       "id": "vblA",
-      "code_hash": "f99cc5e1c2c6ac511dbcafe824ca6be2",
+      "code_hash": "0eeb35ea61642ffc8a22b1d27a3c2c5f",
       "outputs": [
         {
           "type": "data",
@@ -106,12 +236,6 @@
           }
         }
       ],
-      "console": []
-    },
-    {
-      "id": "lEQa",
-      "code_hash": "15dbc1336ecb8131c29def12e360902d",
-      "outputs": [],
       "console": []
     },
     {
@@ -141,22 +265,9 @@
       "console": []
     },
     {
-      "id": "SFPL",
-      "code_hash": "51e8af354e952de759aa8cf1982e3d37",
-      "outputs": [],
-      "console": []
-    },
-    {
       "id": "BYtC",
       "code_hash": "22999478449f49db36ab318e281720e5",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
+      "outputs": [],
       "console": []
     },
     {
@@ -179,7 +290,7 @@
     },
     {
       "id": "iLit",
-      "code_hash": "7d4223c6e01210f6eafcbc4648288125",
+      "code_hash": "f0a50766eb932378beb4040d1c6106a5",
       "outputs": [
         {
           "type": "data",
@@ -198,20 +309,77 @@
       ]
     },
     {
-      "id": "ZHCJ",
-      "code_hash": "8569fd476fd4297f9b196e29b75e5a40",
+      "id": "TqIu",
+      "code_hash": "e5c72f3db1660341aeb707fc55e8c856",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "8c5cb5b65f2927c042eeac2f811a9a20",
       "outputs": [],
       "console": []
     },
     {
-      "id": "ROlb",
-      "code_hash": "3cf74caeb6540b042a6b43ceceb9c124",
+      "id": "ecfG",
+      "code_hash": "b3576ae2d68cc479f32839b8bef42f3b",
       "outputs": [],
       "console": []
     },
     {
-      "id": "Vxnm",
+      "id": "Pvdt",
+      "code_hash": "b39bfeaabe6d2a1cc411df97551b7a99",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "aLJB",
+      "code_hash": "f2873b8976fc037e78c5ad405c9e3de6",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "pHFh",
       "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "NCOB",
+      "code_hash": "d22532ca25b5fa0d425f090c083af148",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='NCOB-0' random-id='f7686f63-488f-2765-4074-ca9a9d2e6622'><marimo-dataframe data-initial-value='{&quot;transforms&quot;:[]}' data-label='null' data-columns='[[&quot;subject&quot;,&quot;string&quot;,&quot;object&quot;],[&quot;text&quot;,&quot;string&quot;,&quot;object&quot;],[&quot;html&quot;,&quot;string&quot;,&quot;object&quot;],[&quot;label&quot;,&quot;integer&quot;,&quot;int64&quot;]]' data-dataframe-name='&quot;df&quot;' data-total='5851' data-page-size='5' data-show-download='true'></marimo-dataframe></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TRpd",
+      "code_hash": "0e3e7f7f8a9d4d8fafc2c0493300739b",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "TXez",
+      "code_hash": "f01f52b6d2ef0f77f22641adf3de7a37",
       "outputs": [],
       "console": []
     }

@@ -22,18 +22,16 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _():
-    import email
     import glob
     import hashlib
     import os
     import tarfile
     import wget
 
-    from email.parser import Parser
-
+    from bs4 import BeautifulSoup
     import mailparser
     import pandas as pd
-    return glob, hashlib, mailparser, os, tarfile, wget
+    return BeautifulSoup, glob, hashlib, mailparser, os, pd, tarfile, wget
 
 
 @app.cell(hide_code=True)
@@ -45,8 +43,10 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _():
+def _(mo):
+    mo.md(r"""
     ### Define dataset source
+    """)
     return
 
 
@@ -99,8 +99,10 @@ def _(os, tarfile, wget):
 
 
 @app.cell(hide_code=True)
-def _():
+def _(mo):
+    mo.md(r"""
     ### Check dataset integrity
+    """)
     return
 
 
@@ -180,12 +182,12 @@ def _(mo):
 
 
 @app.cell
-def _(dataset_dir, dataset_source, mailparser, os):
+def _(dataset_dir, dataset_source, mailparser, os, pd):
     data = {
-        "subject": [],
-        "text": [],
-        "html": [],
-        "label": []
+        'subject': [],
+        'text': [],
+        'html': [],
+        'label': []
     }
 
 
@@ -203,28 +205,21 @@ def _(dataset_dir, dataset_source, mailparser, os):
                     except Exception as e:
                         print(f"Error with file {_file_path}: {e}")
                         continue
-                    data["subject"].append(_mail.subject)
-                    data["text"].append(_mail.text_plain)
-                    data["html"].append(_mail.text_html)
-                    data["label"].append(int(_dataset_info['is_spam']))
-    return
+
+                    data['subject'].append(_mail.subject)
+                    data['text'].append("\n".join(_mail.text_plain))
+                    data['html'].append("\n".join(_mail.text_html))
+                    data['label'].append(int(_dataset_info['is_spam']))
 
 
-@app.function
-def preprocess_email(text):
-    pass
-
-
-@app.cell(hide_code=True)
-def _():
-    ### Emails with text only
-    return
+    df = pd.DataFrame(data)
+    return (df,)
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## Preprocess emails
+    ## Preprocess email
     """)
     return
 
@@ -232,7 +227,128 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    # Random stuff imports
+    ### Data exploration notes
+
+    - High correlation: HTML usage and spam
+    - Dataset artifact: a lot of spam emails have this:
+
+    ```text
+    --DeathToSpamDeathToSpamDeathToSpam--
+    ```
+
+    - There might be (mostly in spam emails) forms with `_____` blanks.
+    - Mailing list footer should be removed, they mostly appear in ham emails.
+
+    ```text
+    -------------------------------------------------------
+    This sf.net email is sponsored by:ThinkGeek
+    Welcome to geek heaven.
+    http://thinkgeek.com/sf
+    _______________________________________________
+    Spamassassin-talk mailing list
+    Spamassassin-talk@lists.sourceforge.net
+    https://lists.sourceforge.net/lists/listinfo/spamassassin-talk
+    ```
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Remove duplicates
+    """)
+    return
+
+
+@app.cell
+def _(df):
+    df.drop_duplicates(subset=['text', 'html'], inplace=True)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Pre-cleanup
+    """)
+    return
+
+
+@app.cell
+def _():
+    def artifact_cleanup(text):
+        artifact = "--DeathToSpamDeathToSpamDeathToSpam--"
+        return text.replace(artifact, "")
+
+    def footer_cleanup(text):
+        pass
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### HTML cleanup
+    """)
+    return
+
+
+@app.cell
+def _(BeautifulSoup, html_string, pd):
+    def html_cleanup(html):
+        if pd.isna(html_string):
+            return ""
+        soup = BeautifulSoup(html, 'html5lib')
+        return soup.get_text(separator=" ", strip=True)
+    return (html_cleanup,)
+
+
+@app.cell
+def _(df, html_cleanup):
+    df['html'].apply(html_cleanup)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Text cleanup
+    """)
+    return
+
+
+@app.function
+def text_cleanup(text):
+    pass
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    # Features engineering
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## Additional features to consider
+
+    - Contains HTML (boolean)
+    - Number of links
+    - Number of special characters
+    - Captials ratio
+    - Email size
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    # Random stuff
     """)
     return
 
@@ -241,6 +357,35 @@ def _(mo):
 def _():
     import marimo as mo
     return (mo,)
+
+
+@app.cell
+def _(df, mo):
+    mo.ui.dataframe(df)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## Beautiful Soup playground
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    html_input = mo.ui.text_area(placeholder="Paste HTML code...")
+    html_input 
+    return (html_input,)
+
+
+@app.cell(hide_code=True)
+def _(BeautifulSoup, html_input):
+    soup = BeautifulSoup(html_input.value, 'html5lib')
+    cleaned_html = soup.get_text(separator=" ", strip=True)
+    print(cleaned_html)
+    return
 
 
 if __name__ == "__main__":

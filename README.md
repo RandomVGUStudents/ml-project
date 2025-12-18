@@ -37,6 +37,8 @@ You didn't need to download that one. Continue.
 
 </details>
 
+<br />
+
 - `uv` (makes life easier, I think). Run this command as Administrator (press `Windows + X`, then `A`, and paste this):
 
 ```powershell
@@ -52,6 +54,8 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 You have the right to, and indeed, it's good to be skeptical. Check out [`uv`'s download page](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer)
 
 </details>
+
+<br />
 
 - `vscode` and `git`.
 Please, I don't send code as zip files via Messenger, nor do I use Notepad.
