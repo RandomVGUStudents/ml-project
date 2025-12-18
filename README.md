@@ -1,5 +1,23 @@
 # Machine Learning project
 
+## IMPORTANT: Windows has a skill issue which will make it fail to parse some spam emails
+
+Use Linux
+
+<details>
+
+### What's wrong?
+
+Some emails has malformed timestamp (e.g. the year is set to 0102 to purposely mess with the system, like preventing itself to be parsed in this case).
+
+But Linux doesn't care about this issue, it seems.
+
+### I don't have Linux
+
+In that case, some spam emails may not be parsed, reducing the amount of training data for the `spam` label.
+
+</details>
+
 ## Me towards vibe coding
 
 - No vibe coding

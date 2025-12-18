@@ -147,9 +147,9 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(glob, mo):
-    _files = glob.glob("./datasets/*/*", recursive=True)
-    idx = mo.ui.number(start=0, stop=len(_files) - 1, label="Number")
-    return (idx,)
+    mails = glob.glob("./datasets/*/*", recursive=True)
+    idx = mo.ui.number(start=0, stop=len(mails) - 1, label="Number")
+    return idx, mails
 
 
 @app.cell(hide_code=True)
@@ -158,15 +158,12 @@ def _(idx):
     return
 
 
-@app.cell(hide_code=True)
-def _(glob, idx, mailparser):
-    _files = glob.glob("./datasets/*/*", recursive=True)
-    print(_files[idx.value])
+@app.cell
+def _(idx, mailparser, mails):
+    print(mails[idx.value])
 
-    mail = mailparser.parse_from_file(_files[idx.value])
+    mail = mailparser.parse_from_file(mails[idx.value])
     print(mail.subject)
-    print("---")
-    print(mail.body)
     print("---")
     print(mail.text_plain)
     print("---")
@@ -177,8 +174,39 @@ def _(glob, idx, mailparser):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## Preprocess emails
+    ## Load whole dataset
     """)
+    return
+
+
+@app.cell
+def _(dataset_dir, dataset_source, mailparser, os):
+    data = {
+        "subject": [],
+        "text": [],
+        "html": [],
+        "label": []
+    }
+
+
+    for _dataset_name, _dataset_info in dataset_source.items():
+        _dataset_path = os.path.join(dataset_dir, _dataset_name)
+
+        if os.path.exists(_dataset_path):
+
+            for _filename in os.listdir(_dataset_path):
+                _file_path = os.path.join(_dataset_path, _filename)
+
+                if os.path.isfile(_file_path):
+                    try:
+                        _mail = mailparser.parse_from_file(_file_path)
+                    except Exception as e:
+                        print(f"Error with file {_file_path}: {e}")
+                        continue
+                    data["subject"].append(_mail.subject)
+                    data["text"].append(_mail.text_plain)
+                    data["html"].append(_mail.text_html)
+                    data["label"].append(int(_dataset_info['is_spam']))
     return
 
 
@@ -188,9 +216,15 @@ def preprocess_email(text):
 
 
 @app.cell(hide_code=True)
+def _():
+    ### Emails with text only
+    return
+
+
+@app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## Load whole dataset
+    ## Preprocess emails
     """)
     return
 
