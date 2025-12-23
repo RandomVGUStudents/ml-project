@@ -406,6 +406,7 @@ def _(
     artifact_cleanup,
     cosine_similarity,
     df,
+    email_pattern,
     html_cleanup,
     idx,
     mo,
@@ -413,11 +414,12 @@ def _(
     random_cleanup,
     re,
     spacy,
+    subject_cleanup,
     url_pattern,
 ):
     _tfidf = TfidfVectorizer()
     _entry = df.iloc[idx.value]
-    _text = f"{_entry['subject']}\n{_entry['text']}"
+    _text = f"{subject_cleanup(_entry['subject'])}\n{_entry['text']}"
     _clean_html = html_cleanup(_entry['html'])
 
 
@@ -428,14 +430,17 @@ def _(
     _doc = nlp(_text_3)
 
 
-    message_id_pattern = re.compile(r"<[^>]+@[^>]+>")
-
     with _doc.retokenize() as retokenizer:
         for ent in _doc.ents:
             if ent.label_ in ["DATE", "TIME", "MONEY"]:
                 retokenizer.merge(ent)
 
-        for match in message_id_pattern.finditer(_doc.text):
+        for match in email_pattern.finditer(_doc.text):
+            span = _doc.char_span(match.start(), match.end())
+            if span is not None:
+                retokenizer.merge(span)
+            
+        for match in url_pattern.finditer(_doc.text):
             span = _doc.char_span(match.start(), match.end())
             if span is not None:
                 retokenizer.merge(span)
@@ -500,7 +505,7 @@ def _(
             mo.hstack(
                 [
                     mo.md(f"""```text
-    {_text}
+    {_entry['subject']}\n{_entry['text']}
     ```
     """),
                     mo.md(f"""```text
@@ -581,9 +586,21 @@ def _(mo):
 
 
 @app.cell
-def _(BeautifulSoup, pd, re2):
+def _(BeautifulSoup, pd, re, re2):
     unamed_pattern = re2.compile(
         r"[-#*_=+]{3,}"
+    )
+
+    url_pattern = re.compile(
+        r"((http|ftp|https):\/\/)?([\w_-]+(?:\.[\w_-]+)*\.[a-zA-Z_-][\w_-]+)([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])"
+    )
+
+    email_pattern = re.compile(
+        r"<[^>]+@[^>]+>"
+    )
+
+    subject_cleanup_pattern = re2.compile(
+        r"\[.*?\]",
     )
 
 
@@ -598,6 +615,13 @@ def _(BeautifulSoup, pd, re2):
             text=text,
             repl=""
         )
+
+    def subject_cleanup(text: str) -> str:
+        return re2.sub(
+            pattern=subject_cleanup_pattern,
+            text=text,
+            repl=""
+        ).strip()
 
 
     def footer_cleanup(text):
@@ -615,7 +639,14 @@ def _(BeautifulSoup, pd, re2):
         soup = BeautifulSoup(html, 'html5lib')
 
         return soup.get_text(separator=" ", strip=True)
-    return artifact_cleanup, html_cleanup, random_cleanup
+    return (
+        artifact_cleanup,
+        email_pattern,
+        html_cleanup,
+        random_cleanup,
+        subject_cleanup,
+        url_pattern,
+    )
 
 
 @app.cell
