@@ -27,6 +27,7 @@ def _():
     import mailparser
     import pandas as pd
 
+    from dateutil import parser
     from bs4 import BeautifulSoup
     from collections import Counter
     from math import sqrt
@@ -57,10 +58,7 @@ def _(spacy):
 
     ruler = nlp.add_pipe("entity_ruler", before="ner")
     patterns = [
-        {"label": "URL_TOK", "pattern": "_URL_"},
-        {"label": "EMAIL_TOK", "pattern": "_EMAIL_ADDR_"}
-    #    {"label": "URL_TOK", "pattern": "_url_"}
-    #    {"label": "URL_TOK", "pattern": "_url_"}
+        {"label": "TIME", "pattern": [{"SHAPE": "dd:dd:dd"}]},
     ]
     ruler.add_patterns(patterns)
     return (nlp,)
@@ -237,7 +235,7 @@ def _():
     dataset_checkpoints = {
         'orig': {
             'description': "Dataset without preprocessing (6046 entries)",
-            'checksum': "5cb36b7b38b8dc643b1dbc099c7ea598"
+            'checksum': "6ab4e23a696aeac72ad3b38396666a25"
         }
     }
     return (dataset_checkpoints,)
@@ -261,7 +259,16 @@ def _(dataset_checkpoints, dataset_dir, hashlib, os, pd):
 
 
 @app.cell
-def _(dataset_dir, dataset_source, load_dataset, mailparser, mo, os, pd):
+def _(
+    dataset_dir,
+    dataset_source,
+    load_dataset,
+    mailparser,
+    mo,
+    os,
+    pd,
+    save_dataset,
+):
     try:
         df = load_dataset('orig')
     except (FileNotFoundError, ValueError) as e:
@@ -293,10 +300,10 @@ def _(dataset_dir, dataset_source, load_dataset, mailparser, mo, os, pd):
                         data['html'].append("\n".join(_mail.text_html))
                         data['label'].append(int(_dataset_info['is_spam']))
 
-        mo.md(e)
-        mo.md("Loading from files...")
+        mo.md(f"{str(e)}\nLoading from files...")
 
         df = pd.DataFrame(data)
+        save_dataset(df, 'orig')
     return (df,)
 
 
@@ -319,6 +326,12 @@ def _(dataset_dir, hashlib, mo, os, pd):
 
         hash = hashlib.md5(open(path, 'rb').read()).hexdigest()
         mo.md(f"File: {path}\nMD5: {hash}")
+    return (save_dataset,)
+
+
+@app.cell
+def _(hashlib):
+    hashlib.md5(open("./datasets/orig.gzip", 'rb').read()).hexdigest()
     return
 
 
@@ -385,9 +398,10 @@ def _(idx):
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(
     TfidfVectorizer,
+    artifact_cleanup,
     cosine_similarity,
     df,
     html_cleanup,
@@ -396,8 +410,6 @@ def _(
     nlp,
     random_cleanup,
     re,
-    replace_email_token,
-    replace_url_token,
     spacy,
     url_pattern,
 ):
@@ -406,37 +418,25 @@ def _(
     _text = f"{_entry['subject']}\n{_entry['text']}"
     _clean_html = html_cleanup(_entry['html'])
 
-    # Remove sponsor and mailing list
-    # _sponsor_pattern = re2.compile(
-    #     r"(?m)^[> \t]*-{5,}\s+This sf\.net email is sponsored by:.*(?s:.*?)(?=(?m)^[> \t]*_{5,}|\Z)"
-    # )
-    # 
-    # _text = re2.sub(
-    #     pattern=_sponsor_pattern,
-    #     text=_text,
-    #     repl="_______________________________________________"
-    # )
-    # 
-    # _maillist_pattern = re2.compile(
-    #     r"(?m)^[> \t]*_{5,}\s*[\r\n]+[> \t]*.* mailing list(?:[\r\n]+[> \t]*.*){0,4}"
-    # )
-    # 
-    # _text = re2.sub(
-    #     pattern=_maillist_pattern,
-    #     text=_text,
-    #     repl=""
-    # )
 
-    # Replace email address tokens
-    _text_1 = replace_email_token(_text)
+    _text_2 = random_cleanup(_text)
+    _text_3 = artifact_cleanup(_text_2)
 
-    # Replace URL tokens
-    _text_2 = replace_url_token(_text_1)
-
-    # What
-    _text_3 = random_cleanup(_text_2)
 
     _doc = nlp(_text_3)
+
+
+    message_id_pattern = re.compile(r"<[^>]+@[^>]+>")
+
+    with _doc.retokenize() as retokenizer:
+        for ent in _doc.ents:
+            if ent.label_ in ["DATE", "TIME", "MONEY"]:
+                retokenizer.merge(ent)
+
+        for match in message_id_pattern.finditer(_doc.text):
+            span = _doc.char_span(match.start(), match.end())
+            if span is not None:
+                retokenizer.merge(span)
 
 
     _table2 = mo.ui.table(
@@ -445,9 +445,19 @@ def _(
             'Lemma': token.lemma_,
             'PoS': token.pos_,
             'Tag': token.tag_,
-            'Dependency': token.dep_,
-            'Stop word': token.is_stop
+            'Entity': token.ent_type_,
+            'Stop word': token.is_stop,
+            'URL': token.like_url,
+            'Email': token.like_email
         } for token in _doc],
+        pagination=True
+    )
+
+    _table3 = mo.ui.table(
+        data=[{
+            'Entity': ent.text,
+            'Label': ent.label_
+        } for ent in _doc.ents],
         pagination=True
     )
 
@@ -455,14 +465,22 @@ def _(
     def token_processor(token: spacy.tokens.Token) -> str:
         if token.is_stop:
             return ""
-        if token.text in ["_URL_", "_EMAIL_ADDR_"]:
-            return token.text
+
+        if token.like_url:
+            return "_URL_"
+        if (token.like_email) or (token.text.startswith("<") and "@" in token.text and token.text.endswith(">")):
+            return "_EMAIL_"
+
+        if token.ent_type_:
+            return f"_{token.ent_type_}_"
+    
+    
         if token.pos_ == "PROPN":
             return "_PROPN_"
         if token.pos_ == "NUM":
             return "_NUM_"
         else:
-            return token.lemma_
+            return token.lemma_.lower()
 
 
     _newtext = " ".join(
@@ -482,10 +500,6 @@ def _(
                 [
                     mo.md(f"""```text
     {_text}
-    ```
-    """),
-                    mo.md(f"""```text
-    {_text_1}
     ```
     """),
                     mo.md(f"""```text
@@ -509,11 +523,14 @@ def _(
     ```
     """)
                 ]),
-            mo.md(f"Cosine similarity: {cosine_similarity(_entry['text'], _clean_html)}"),
-            mo.md(f"URL count: {len(re.findall(url_pattern, f"{_entry['subject']}\n{_entry['text']}"))}"),
+            mo.md(f"Original text char count: {len(_text)}"),
+            mo.md(f"Cleaned HTML char count: {len(_clean_html)}"),
+            mo.md(f"Cosine similarity: {cosine_similarity(_text, _clean_html)}"),
+            mo.md(f"URL count: {len(re.findall(url_pattern, f"{_text}"))}"),
             mo.hstack([
+                _table,
                 _table2,
-                _table
+                _table3
             ])
         ])
     return
@@ -522,10 +539,13 @@ def _(
 @app.cell
 def _(Counter, sqrt):
     def cosine_similarity(s1: str, s2: str) -> float:
+        if len(s1) == 0 or len(s2) == 0:
+            return 0.0
+
         # Convert strings to character frequency vectors
         vec1 = Counter(s1)
         vec2 = Counter(s2)
-    
+
         # Calculating cosine similarity
         dot_product = sum(vec1[ch] * vec2[ch] for ch in vec1)
         magnitude1 = sqrt(sum(count ** 2 for count in vec1.values()))
@@ -560,43 +580,15 @@ def _(mo):
 
 
 @app.cell
-def _(BeautifulSoup, pd, re, re2):
-    # url_pattern = re2.compile(
-    #     r"(https?:\/\/)?[a-zA-Z0-9][a-zA-Z0-9.\-]*\.[a-zA-Z]{2,}(:\d+)?(\/[a-zA-Z0-9.\-_\~:/?#[\]@!$&'()*+,;=%]*)?"
-    # )
-
-    url_pattern = re.compile(
-        "((http|ftp|https):\/\/)?([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])"
-    )
-    
-    email_pattern = re2.compile(
-        r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-    )
-
+def _(BeautifulSoup, pd, re2):
     unamed_pattern = re2.compile(
         r"[-#*_=+]{3,}"
     )
 
-    
+
     def artifact_cleanup(text):
         artifact = "--DeathToSpamDeathToSpamDeathToSpam--"
         return text.replace(artifact, "")
-
-
-    def replace_url_token(text: str) -> str:
-        return re.sub(
-            pattern=url_pattern,
-            string=text,
-            repl="_URL_"
-        )
-
-
-    def replace_email_token(text: str) -> str:
-        return re2.sub(
-            pattern=email_pattern,
-            text=text,
-            repl="_EMAIL_ADDR_"
-        )
 
 
     def random_cleanup(text: str) -> str:
@@ -621,18 +613,8 @@ def _(BeautifulSoup, pd, re, re2):
 
         soup = BeautifulSoup(html, 'html5lib')
 
-        # Add tokens
-        append_tok = " ".join(["_URL_"] * len(soup.find_all('a')))
-        print(append_tok)
-    
-        return f"{soup.get_text(separator=" ", strip=True)}\n{append_tok}"
-    return (
-        html_cleanup,
-        random_cleanup,
-        replace_email_token,
-        replace_url_token,
-        url_pattern,
-    )
+        return soup.get_text(separator=" ", strip=True)
+    return artifact_cleanup, html_cleanup, random_cleanup
 
 
 @app.cell
