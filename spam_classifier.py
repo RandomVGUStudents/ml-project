@@ -347,7 +347,7 @@ def _(mo):
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(mo):
     mo.md(r"""
     ### Data exploration notes
@@ -374,6 +374,8 @@ def _(mo):
     ```
 
     - ~~Email replies appear with `> ` or `--] `, and "On DATE, USER wrote:"~~ Nvm, it's pretty random.
+    - Mailling list (or some name) in subject that is not filtered (like ilug)
+    - Entity labels exclusion: "CARDINAL", "ORDINAL"
     """)
     return
 
@@ -398,7 +400,7 @@ def _(idx):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(
     TfidfVectorizer,
     artifact_cleanup,
@@ -471,9 +473,8 @@ def _(
         if (token.like_email) or (token.text.startswith("<") and "@" in token.text and token.text.endswith(">")):
             return "_EMAIL_"
 
-        if token.ent_type_:
+        if token.ent_type_ not in ["", "CARDINAL", "ORDINAL"]:
             return f"_{token.ent_type_}_"
-    
     
         if token.pos_ == "PROPN":
             return "_PROPN_"

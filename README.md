@@ -93,6 +93,11 @@ In a VSCode window, or Powershell window, run:
 uv run marimo edit .\spam_classifier.py
 ```
 
+## Navigating around
+
+- Run the boxes in "Remove duplicates" section: `df.drop_duplicates(...)`, `idx` and the one below `idx` to view individual emails. Change `idx` to move back and forth.
+- Run the box in "Random stuff": `mo.ui.dataframe(df)` to see the whole dataset.
+
 ## TODO
 
 - [x] Download dataset
