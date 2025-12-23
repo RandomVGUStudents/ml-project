@@ -8,6 +8,7 @@ wheels/
 
 # Virtual environments
 .venv
+.direnv
 
 # Will be downloaded
-datasets/
+datasets
