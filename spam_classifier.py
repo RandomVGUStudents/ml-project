@@ -46,6 +46,7 @@ def _():
         spacy,
         sqrt,
         tarfile,
+        typing,
         wget,
     )
 
@@ -404,24 +405,24 @@ def _(idx):
 def _(
     TfidfVectorizer,
     artifact_cleanup,
-    cosine_similarity,
     df,
     email_pattern,
     html_cleanup,
     idx,
+    merge_text_html,
     mo,
     nlp,
     random_cleanup,
-    re,
     spacy,
     subject_cleanup,
-    url_pattern,
 ):
     _tfidf = TfidfVectorizer()
     _entry = df.iloc[idx.value]
-    _text = f"{subject_cleanup(_entry['subject'])}\n{_entry['text']}"
-    _clean_html = html_cleanup(_entry['html'])
 
+    _clean_subj = subject_cleanup(_entry['subject'])
+    _clean_html = html_cleanup(_entry['html'])
+    _merged_text = merge_text_html(_entry['text'],_entry['html'])
+    _text = f"{_clean_subj}\n{_merged_text['str']}"
 
     _text_2 = random_cleanup(_text)
     _text_3 = artifact_cleanup(_text_2)
@@ -439,11 +440,12 @@ def _(
             span = _doc.char_span(match.start(), match.end())
             if span is not None:
                 retokenizer.merge(span)
-            
-        for match in url_pattern.finditer(_doc.text):
-            span = _doc.char_span(match.start(), match.end())
-            if span is not None:
-                retokenizer.merge(span)
+
+        # for match in url_pattern.finditer(_doc.text):
+        #     span = _doc.char_span(match.start(), match.end())
+        #     print(span)
+        #     if span is not None:
+        #         retokenizer.merge(span)
 
 
     _table2 = mo.ui.table(
@@ -480,7 +482,7 @@ def _(
 
         if token.ent_type_ not in ["", "CARDINAL", "ORDINAL"]:
             return f"_{token.ent_type_}_"
-    
+
         if token.pos_ == "PROPN":
             return "_PROPN_"
         if token.pos_ == "NUM":
@@ -504,35 +506,14 @@ def _(
             mo.md(f"Label: {"Ham" if _entry['label'] == 0 else "Spam"}"),
             mo.hstack(
                 [
-                    mo.md(f"""```text
-    {_entry['subject']}\n{_entry['text']}
-    ```
-    """),
-                    mo.md(f"""```text
-    {_text_2}
-    ```
-    """),
-                    mo.md(f"""```text
-    {_text_3}
-    ```
-    """),
-                    mo.md(f"""```text
-    {_newtext}
-    ```
-    """),
-                    mo.md(f"""```html
-    {_entry['html']}
-    ```
-    """),
-                    mo.md(f"""```text
-    {_clean_html}
-    ```
-    """)
-                ]),
-            mo.md(f"Original text char count: {len(_text)}"),
-            mo.md(f"Cleaned HTML char count: {len(_clean_html)}"),
-            mo.md(f"Cosine similarity: {cosine_similarity(_text, _clean_html)}"),
-            mo.md(f"URL count: {len(re.findall(url_pattern, f"{_text}"))}"),
+                    mo.md(f"{_clean_subj}\n{_merged_text['str']}".replace("\n", " ")),
+                    mo.md(_text_3.replace("\n", " ")),
+                    mo.md(_newtext.replace("\n", " "))
+                ],
+                widths="equal"
+            ),
+            mo.md(f"URL count: {_merged_text['link_count']}"), # If there's still URLs, add it to _URL_ token count.
+            mo.md(f"Stop word ratio: {len([tok for tok in _doc if tok.is_stop]) / _doc.__len__()}"),
             mo.hstack([
                 _table,
                 _table2,
@@ -561,20 +542,38 @@ def _(Counter, sqrt):
 
 
 @app.cell
-def _(cosine_similarity, html_cleanup):
-    def merge_text_html(text: str, html: str, threshold = 0.95) -> str:
-        if (len(text) == 0 and len(html) != 0):
-            return html_cleanup(html)
-        elif len(html) == 0:
-            return text
+def _(BeautifulSoup, cosine_similarity, url_pattern):
+    def merge_text_html(text: str, html: str, threshold = 0.95) -> object:
+        merged_text = {
+            'str': "",
+            'link_count': len(url_pattern.findall(text))
+        }
 
-        clean_html = html_cleanup(html)
+        if len(html) != 0:
+            soup = BeautifulSoup(html, 'html5lib')
+            clean_html = soup.get_text(separator=" ", strip=True)
+        
+            if len(text) == 0:
+                merged_text['str'] = clean_html.replace("\n", " ")
+                merged_text['link_count'] += len(soup.find_all('a'))
+            
+            else:
+                text_no_url = url_pattern.sub(string=text, repl="")
+                similarity = cosine_similarity(text_no_url, clean_html)
+                print(similarity)
+            
+                if similarity >= threshold:
+                    merged_text['str'] = text_no_url
+            
+                else:
+                    merged_text['str'] = f"{text_no_url}\n{clean_html}"
+                    merged_text['link_count'] += len(soup.find_all('a'))
 
-        if cosine_similarity(text, html) > threshold:
-            return text
         else:
-            return f"{text}\n{clean_html}"
-    return
+            merged_text['str'] = url_pattern.sub(string=text, repl="")
+
+        return merged_text
+    return (merge_text_html,)
 
 
 @app.cell(hide_code=True)
@@ -671,9 +670,10 @@ def _(mo):
     - Contains HTML (boolean)
     - Number of links (share the same token with links in text)
     - ~~Number of special characters~~ Might not be a good feature
-    - Captials ratio
+    - Capitals ratio
     - Email size (maybe not)
     - Reply ratio, reply depth count
+    - Stop word ratio
     """)
     return
 
@@ -687,10 +687,15 @@ def _(mo):
 
 
 @app.cell
-def _(BeautifulSoup):
-    def count_links(html):
-        soup = BeautifulSoup(html, 'html5lib')
-        return len(soup.find_all('a'))
+def _(BeautifulSoup, typing, url_pattern):
+    def count_links(text: typing.Optional[str] = None, html: typing.Optional[str] = None):
+        if text is not None:
+            return len(url_pattern.findall(text))
+
+        if html is not None:
+            soup = BeautifulSoup(html, 'html5lib')
+            soup.find_all('a')
+            return 
     return (count_links,)
 
 
