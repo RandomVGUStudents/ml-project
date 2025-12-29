@@ -5,6 +5,19 @@
   },
   "cells": [
     {
+      "id": "setup",
+      "code_hash": "83ed9222a42d8e3e69b1bc1d8972870a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
       "id": "Hbol",
       "code_hash": "f60c2e70ee2a2d1f86b6aa881a21e9a4",
       "outputs": [
@@ -44,6 +57,32 @@
       "console": []
     },
     {
+      "id": "bkHC",
+      "code_hash": "8ce86c86f7fae338ff1b1e625e06059d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "eeff16716c07801607f7e65a9d8bfd43",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
       "id": "PKri",
       "code_hash": "6cc6d9dc250d56d24ad4d505b0f9c481",
       "outputs": [
@@ -54,6 +93,12 @@
           }
         }
       ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "8b59bb585b24412756dc88f69f12b0ae",
+      "outputs": [],
       "console": []
     },
     {
@@ -70,6 +115,31 @@
       "console": []
     },
     {
+      "id": "BYtC",
+      "code_hash": "6249db1fa52edc2b863485d1e59e0ca2",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "7f9bec28bc8902d45d905788d7aa59a1",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "408fa92f5dd1c524b4095909de308b5a",
+      "outputs": [],
+      "console": []
+    },
+    {
       "id": "emfo",
       "code_hash": "379f467fd25de3f4c63408cac11ff612",
       "outputs": [
@@ -77,6 +147,45 @@
           "type": "data",
           "data": {
             "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"load-whole-dataset\">Load whole dataset</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "0ee95c1d66b8da1539cdc038a5dfd84f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "9a0a448e56ef24493d46f1901d174be4",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "fc43647ec985289b6263a178ac87c6a0",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
           }
         }
       ],
@@ -93,6 +202,25 @@
           }
         }
       ],
+      "console": []
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "a00e30d8debb76bc8719ba64ede7b859",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "c889730ed82c76cf74abcf7f1146d3ce",
+      "outputs": [],
       "console": []
     },
     {
@@ -135,264 +263,6 @@
       "console": []
     },
     {
-      "id": "ecfG",
-      "code_hash": "8cbea9c2ff8c9470388174a4aaa41edf",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"preprocess-preview\">Preprocess preview</h3></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "aLJB",
-      "code_hash": "2fa90d78d289af96821e68120153614f",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"pre-cleanup\">Pre-cleanup</h3></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "TXez",
-      "code_hash": "7d746525288bda534d47c101e99e25c2",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"post-cleanup\">Post cleanup</h3></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "yCnT",
-      "code_hash": "47ca681e3a3e6ce3802d4ccb8c91c7f4",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"features-engineering\">Features engineering</h1></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "wlCL",
-      "code_hash": "749f8020815ac38ac07f810523f032eb",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"additional-features-to-consider\">Additional features to consider</h2>\n<ul>\n<li>Contains HTML (boolean)</li>\n<li>Number of links (share the same token with links in text)</li>\n<li><del>Number of special characters</del> Might not be a good feature</li>\n<li>Capitals ratio</li>\n<li>Email size (maybe not)</li>\n<li>Reply ratio, reply depth count</li>\n<li>Stop word ratio</li>\n</ul></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "kqZH",
-      "code_hash": "59d015d13956464f7f0677940bbbb5f0",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"number-of-links\">Number of links</h3></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "dGlV",
-      "code_hash": "86d0da8586edc21d41e0da08e1d8efd0",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"number-of-special-characters\">Number of special characters</h3></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "yOPj",
-      "code_hash": "82b1d433f45399fd6077e2af5ddc8f49",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"random-stuff\">Random stuff</h1></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "LJZf",
-      "code_hash": "a043d2ac40d190c054ee013d3587a101",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"beautiful-soup-playground\">Beautiful Soup playground</h2></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "CcZR",
-      "code_hash": "d60c9870e230ae729e3608cf7266aa25",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"re2-playground\">RE2 playground</h2></span>"
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "setup",
-      "code_hash": "83ed9222a42d8e3e69b1bc1d8972870a",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "bkHC",
-      "code_hash": "8ce86c86f7fae338ff1b1e625e06059d",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "lEQa",
-      "code_hash": "eeff16716c07801607f7e65a9d8bfd43",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "Xref",
-      "code_hash": "8b59bb585b24412756dc88f69f12b0ae",
-      "outputs": [],
-      "console": []
-    },
-    {
-      "id": "BYtC",
-      "code_hash": "6249db1fa52edc2b863485d1e59e0ca2",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "RGSE",
-      "code_hash": "7f9bec28bc8902d45d905788d7aa59a1",
-      "outputs": [],
-      "console": []
-    },
-    {
-      "id": "Kclp",
-      "code_hash": "408fa92f5dd1c524b4095909de308b5a",
-      "outputs": [],
-      "console": []
-    },
-    {
-      "id": "Hstk",
-      "code_hash": "27912416184ba37c437d1c1617f7218d",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "nWHF",
-      "code_hash": "9a0a448e56ef24493d46f1901d174be4",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "iLit",
-      "code_hash": "fc43647ec985289b6263a178ac87c6a0",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "ROlb",
-      "code_hash": "e14a1f17b2df8e147798d3a71272b9c6",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
-      "console": []
-    },
-    {
-      "id": "qnkX",
-      "code_hash": "c889730ed82c76cf74abcf7f1146d3ce",
-      "outputs": [],
-      "console": []
-    },
-    {
       "id": "ulZA",
       "code_hash": "40a582c21112e31582896a4b77db9719",
       "outputs": [
@@ -400,6 +270,19 @@
           "type": "data",
           "data": {
             "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ecfG",
+      "code_hash": "8cbea9c2ff8c9470388174a4aaa41edf",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"preprocess-preview\">Preprocess preview</h3></span>"
           }
         }
       ],
@@ -420,25 +303,25 @@
     },
     {
       "id": "ZBYS",
-      "code_hash": "27026b9ab2832f6785ea0dca615d9c4b",
+      "code_hash": "777b8c10576bdcdeea93f8eb57b19bae",
       "outputs": [
         {
           "type": "data",
           "data": {
-            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Label: Ham</span></span><div style='display: flex;flex: 1;flex-direction: row;justify-content: space-between;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><div style='flex: 1'><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Re: New Sequences Window     Date:        Wed, 21 Aug 2002 10:54:46 -0500     From:        Chris Garrigues <a href=\"&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#99;&#119;&#103;&#45;&#100;&#97;&#116;&#101;&#100;&#45;&#49;&#48;&#51;&#48;&#51;&#55;&#55;&#50;&#56;&#55;&#46;&#48;&#54;&#102;&#97;&#54;&#100;&#64;&#68;&#101;&#101;&#112;&#69;&#100;&#100;&#121;&#46;&#67;&#111;&#109;\">&#99;&#119;&#103;&#45;&#100;&#97;&#116;&#101;&#100;&#45;&#49;&#48;&#51;&#48;&#51;&#55;&#55;&#50;&#56;&#55;&#46;&#48;&#54;&#102;&#97;&#54;&#100;&#64;&#68;&#101;&#101;&#112;&#69;&#100;&#100;&#121;&#46;&#67;&#111;&#109;</a>     Message-ID:  <a href=\"&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#49;&#48;&#50;&#57;&#57;&#52;&#53;&#50;&#56;&#55;&#46;&#52;&#55;&#57;&#55;&#46;&#84;&#77;&#68;&#65;&#64;&#100;&#101;&#101;&#112;&#101;&#100;&#100;&#121;&#46;&#118;&#105;&#114;&#99;&#105;&#111;&#46;&#99;&#111;&#109;\">&#49;&#48;&#50;&#57;&#57;&#52;&#53;&#50;&#56;&#55;&#46;&#52;&#55;&#57;&#55;&#46;&#84;&#77;&#68;&#65;&#64;&#100;&#101;&#101;&#112;&#101;&#100;&#100;&#121;&#46;&#118;&#105;&#114;&#99;&#105;&#111;&#46;&#99;&#111;&#109;</a>     | I can't reproduce this error.  For me it is very repeatable... (like every time, without fail).  This is the debug log of the pick happening ...  18:19:03 Pick_It {exec pick +inbox -list -lbrace -lbrace -subject ftp -rbrace -rbrace} {4852-4852 -sequence mercury} 18:19:03 exec pick +inbox -list -lbrace -lbrace -subject ftp -rbrace -rbrace 4852-4852 -sequence mercury 18:19:04 Ftoc_PickMsgs {{1 hit}} 18:19:04 Marking 1 hits 18:19:04 tkerror: syntax error in expression \"int ...  Note, if I run the pick command by hand ...  delta$ pick +inbox -list -lbrace -lbrace -subject ftp -rbrace -rbrace  4852-4852 -sequence mercury 1 hit  That's where the \"1 hit\" comes from (obviously).  The version of nmh I'm using is ...  delta$ pick -version pick -- nmh-1.0.4 [compiled on fuchsia.cs.mu.OZ.AU at Sun Mar 17 14:55:56 ICT 2002]  And the relevant part of my .mh_profile ...  delta$ mhparam pick -seq sel -list   Since the pick command works, the sequence (actually, both of them, the one that's explicit on the command line, from the search popup, and the one that comes from .mh_profile) do get created.  kre  ps: this is still using the version of the code form a day ago, I haven't been able to reach the cvs repository today (local routing issue I think).    <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>_____ Exmh-workers mailing list <a href=\"&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#69;&#120;&#109;&#104;&#45;&#119;&#111;&#114;&#107;&#101;&#114;&#115;&#64;&#114;&#101;&#100;&#104;&#97;&#116;&#46;&#99;&#111;&#109;\">&#69;&#120;&#109;&#104;&#45;&#119;&#111;&#114;&#107;&#101;&#114;&#115;&#64;&#114;&#101;&#100;&#104;&#97;&#116;&#46;&#99;&#111;&#109;</a> <a href=\"https://listman.redhat.com/mailman/listinfo/exmh-workers\" rel=\"noopener noreferrer\" target=\"_blank\">https://listman.redhat.com/mailman/listinfo/exmh-workers</a>  </span></span></div><div style='flex: 1'><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Re: New Sequences Window     Date:        Wed, 21 Aug 2002 10:54:46 -0500     From:        Chris Garrigues <a href=\"&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#99;&#119;&#103;&#45;&#100;&#97;&#116;&#101;&#100;&#45;&#49;&#48;&#51;&#48;&#51;&#55;&#55;&#50;&#56;&#55;&#46;&#48;&#54;&#102;&#97;&#54;&#100;&#64;&#68;&#101;&#101;&#112;&#69;&#100;&#100;&#121;&#46;&#67;&#111;&#109;\">&#99;&#119;&#103;&#45;&#100;&#97;&#116;&#101;&#100;&#45;&#49;&#48;&#51;&#48;&#51;&#55;&#55;&#50;&#56;&#55;&#46;&#48;&#54;&#102;&#97;&#54;&#100;&#64;&#68;&#101;&#101;&#112;&#69;&#100;&#100;&#121;&#46;&#67;&#111;&#109;</a>     Message-ID:  <a href=\"&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#49;&#48;&#50;&#57;&#57;&#52;&#53;&#50;&#56;&#55;&#46;&#52;&#55;&#57;&#55;&#46;&#84;&#77;&#68;&#65;&#64;&#100;&#101;&#101;&#112;&#101;&#100;&#100;&#121;&#46;&#118;&#105;&#114;&#99;&#105;&#111;&#46;&#99;&#111;&#109;\">&#49;&#48;&#50;&#57;&#57;&#52;&#53;&#50;&#56;&#55;&#46;&#52;&#55;&#57;&#55;&#46;&#84;&#77;&#68;&#65;&#64;&#100;&#101;&#101;&#112;&#101;&#100;&#100;&#121;&#46;&#118;&#105;&#114;&#99;&#105;&#111;&#46;&#99;&#111;&#109;</a>     | I can't reproduce this error.  For me it is very repeatable... (like every time, without fail).  This is the debug log of the pick happening ...  18:19:03 Pick_It {exec pick +inbox -list -lbrace -lbrace -subject ftp -rbrace -rbrace} {4852-4852 -sequence mercury} 18:19:03 exec pick +inbox -list -lbrace -lbrace -subject ftp -rbrace -rbrace 4852-4852 -sequence mercury 18:19:04 Ftoc_PickMsgs {{1 hit}} 18:19:04 Marking 1 hits 18:19:04 tkerror: syntax error in expression \"int ...  Note, if I run the pick command by hand ...  delta$ pick +inbox -list -lbrace -lbrace -subject ftp -rbrace -rbrace  4852-4852 -sequence mercury 1 hit  That's where the \"1 hit\" comes from (obviously).  The version of nmh I'm using is ...  delta$ pick -version pick -- nmh-1.0.4 [compiled on fuchsia.cs.mu.OZ.AU at Sun Mar 17 14:55:56 ICT 2002]  And the relevant part of my .mh_profile ...  delta$ mhparam pick -seq sel -list   Since the pick command works, the sequence (actually, both of them, the one that's explicit on the command line, from the search popup, and the one that comes from .mh_profile) do get created.  kre  ps: this is still using the version of the code form a day ago, I haven't been able to reach the cvs repository today (local routing issue I think).     Exmh-workers mailing list <a href=\"&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#69;&#120;&#109;&#104;&#45;&#119;&#111;&#114;&#107;&#101;&#114;&#115;&#64;&#114;&#101;&#100;&#104;&#97;&#116;&#46;&#99;&#111;&#109;\">&#69;&#120;&#109;&#104;&#45;&#119;&#111;&#114;&#107;&#101;&#114;&#115;&#64;&#114;&#101;&#100;&#104;&#97;&#116;&#46;&#99;&#111;&#109;</a> <a href=\"https://listman.redhat.com/mailman/listinfo/exmh-workers\" rel=\"noopener noreferrer\" target=\"_blank\">https://listman.redhat.com/mailman/listinfo/exmh-workers</a>  </span></span></div><div style='flex: 1'><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">: new sequence window       date :         <em>DATE</em> <em>TIME</em> <em>NUM</em>        :         <em>PERSON</em> &lt; cwg - <em>NUM</em> . com &gt;       message - id :   &lt; <em>EMAIL</em> &gt;       |    reproduce  error .         repeatable ... ( like  time ,  fail ) .       debug log   pick happen ...    <em>TIME</em> pick_it { exec pick + inbox -list -lbrace -lbrace -subject ftp -rbrace -rbrace } { <em>NUM</em> <em>NUM</em> <em>NUM</em> -sequence mercury }   <em>TIME</em> exec pick <em>NUM</em> inbox -list -lbrace -lbrace -subject ftp -rbrace -rbrace <em>NUM</em> <em>NUM</em> <em>NUM</em> -sequence mercury   <em>TIME</em> <em>PROPN</em> { { <em>NUM</em> hit } }   <em>TIME</em> marking <em>NUM</em> hit   <em>TIME</em> <em>PROPN</em> : syntax error  expression \" int ...    note ,   run  pick command  hand ...    delta$ pick + inbox -list -lbrace -lbrace -subject ftp -rbrace -rbrace   <em>NUM</em> <em>NUM</em> <em>NUM</em> -sequence mercury   <em>NUM</em> hit        \" <em>NUM</em> hit \" come  ( obviously ) .    version  <em>PROPN</em>       ...    delta$ pick -version   pick -- <em>NUM</em> [ compile  <em>URL</em> . oz.au  <em>DATE</em> <em>TIME</em> ict <em>NUM</em> ]      relevant    .mh_profile ...    delta$ mhparam pick   -seq <em>PROPN</em> -list       pick command work ,  sequence ( actually ,    ,       explicit   command line ,   search popup ,       come  .mh_profile )   create .    <em>PROPN</em>    p :      version   code form <em>DATE</em> ,       able  reach  <em>PROPN</em> repository <em>DATE</em> ( local routing issue  think ) .       <em>PROPN</em> - worker mailing list   <em>EMAIL</em>   <em>URL</em>   </span></span></div></div><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Stop word ratio: 0.23384615384615384</span></span><div style='display: flex;flex: 1;flex-direction: row;justify-content: space-between;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><marimo-ui-element object-id='ZBYS-2' random-id='77fe7b27-0a32-eef2-cb67-7b0eaa41ec77'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;word&#92;&quot;:&#92;&quot;new&#92;&quot;,&#92;&quot;idx&#92;&quot;:47},{&#92;&quot;word&#92;&quot;:&#92;&quot;sequence&#92;&quot;,&#92;&quot;idx&#92;&quot;:64},{&#92;&quot;word&#92;&quot;:&#92;&quot;window&#92;&quot;,&#92;&quot;idx&#92;&quot;:70},{&#92;&quot;word&#92;&quot;:&#92;&quot;date&#92;&quot;,&#92;&quot;idx&#92;&quot;:17},{&#92;&quot;word&#92;&quot;:&#92;&quot;_date_&#92;&quot;,&#92;&quot;idx&#92;&quot;:0},{&#92;&quot;word&#92;&quot;:&#92;&quot;_time_&#92;&quot;,&#92;&quot;idx&#92;&quot;:5},{&#92;&quot;word&#92;&quot;:&#92;&quot;_num_&#92;&quot;,&#92;&quot;idx&#92;&quot;:2},{&#92;&quot;word&#92;&quot;:&#92;&quot;_person_&#92;&quot;,&#92;&quot;idx&#92;&quot;:3},{&#92;&quot;word&#92;&quot;:&#92;&quot;cwg&#92;&quot;,&#92;&quot;idx&#92;&quot;:16},{&#92;&quot;word&#92;&quot;:&#92;&quot;com&#92;&quot;,&#92;&quot;idx&#92;&quot;:11}]&quot;' data-total-rows='73' data-total-columns='2' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-selection='&quot;multi&quot;' data-show-filters='false' data-show-download='true' data-show-column-summaries='true' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element><marimo-ui-element object-id='ZBYS-0' random-id='78ff9b2d-0d25-b12b-35d5-fd19b8c0182d'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;Token&#92;&quot;:&#92;&quot;Re&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;re&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;ADP&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;IN&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:true,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;:&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;:&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;PUNCT&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;:&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;New&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;new&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;ADJ&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;JJ&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;Sequences&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;sequence&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;NOUN&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;NNS&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;Window&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;window&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;NOUN&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;NN&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;&#92;&#92;n    &#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;&#92;&#92;n    &#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;SPACE&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;_SP&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;Date&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;date&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;NOUN&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;NN&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;:&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;:&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;PUNCT&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;:&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;       &#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;       &#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;SPACE&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;_SP&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;Wed, 21 Aug 2002&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;Wed, 21 Aug 2002&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;PROPN&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;NNP&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;DATE&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false}]&quot;' data-total-rows='325' data-total-columns='8' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-selection='&quot;multi&quot;' data-show-filters='false' data-show-download='true' data-show-column-summaries='true' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element><marimo-ui-element object-id='ZBYS-1' random-id='050219e2-2651-64bd-d77e-5ccaa992b3c7'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;Entity&#92;&quot;:&#92;&quot;Wed, 21 Aug 2002&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;DATE&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;10:54:46&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;TIME&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;Chris Garrigues&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;PERSON&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;18:19:03&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;TIME&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;18:19:03&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;TIME&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;18:19:04&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;TIME&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;1&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;CARDINAL&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;18:19:04&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;TIME&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;18:19:04&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;TIME&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;1&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;CARDINAL&#92;&quot;}]&quot;' data-total-rows='14' data-total-columns='2' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-selection='&quot;multi&quot;' data-show-filters='false' data-show-download='true' data-show-column-summaries='true' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element></div></div>"
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Label: Spam</span></span><div style='display: flex;flex: 1;flex-direction: row;justify-content: space-between;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><div style='flex: 1'><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">New Product Announcement NEW PRODUCT ANNOUNCEMENT  From: OUTSOURCE ENG.&amp; MFG. INC.   Sir/Madam;  This note is to inform you of new watchdog board technology for maintaining continuous unattended operation of PC/Servers etc. that we have released for distribution.    We are proud to announce Watchdog Control Center featuring MAM (Multiple Applications Monitor) capability. The key feature of this application enables you to monitor as many applications as you have resident on any computer as well as the operating system for continuous unattended operation.  The Watchdog Control Center featuring MAM capability expands third party application \"control\" of a Watchdog as access to the application's source code is no longer needed.  Here is how it all works: Upon installation of the application and Watchdog, the user may select many configuration options, based on their model of Watchdog, to fit their operational needs.  If the MAM feature is enabled, the user may select any executable program that they wish for monitoring.  A lock up of the operating system or if any one of the selected applications is not running, the MAM feature, in conjunction with the Watchdog, will reset the system allowing for continuous operation.  It's that simple!  Watchdog Control Center is supported on most Microsoft Windows platforms (Win9x/WinNT/Win2k) and includes a Linux version for PCI Programmable Watchdogs.  Watchdog Control Center Features: - Automated installation - Controls all Outsource Engineering Watchdogs - User selectable Watchdog timeout period - User selectable Watchdog stroke interval - Multiple Application Monitoring  Included on the Installation CD: - Watchdog Control Center - Watchdog Drivers - Documentation  For more information, please visit out website at <a href=\"http://www.outsrc-em.com/\" rel=\"noopener noreferrer\" target=\"_blank\">http://www.outsrc-em.com/</a> or send an e-mail to <a href=\"&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#97;&#108;&#101;&#115;&#64;&#111;&#117;&#116;&#115;&#114;&#99;&#45;&#101;&#109;&#46;&#99;&#111;&#109;\">&#115;&#97;&#108;&#101;&#115;&#64;&#111;&#117;&#116;&#115;&#114;&#99;&#45;&#101;&#109;&#46;&#99;&#111;&#109;</a>  </span></span></div><div style='flex: 1'><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">New Product Announcement NEW PRODUCT ANNOUNCEMENT  From: OUTSOURCE ENG.&amp; MFG. INC.   Sir/Madam;  This note is to inform you of new watchdog board technology for maintaining continuous unattended operation of PC/Servers etc. that we have released for distribution.    We are proud to announce Watchdog Control Center featuring MAM (Multiple Applications Monitor) capability. The key feature of this application enables you to monitor as many applications as you have resident on any computer as well as the operating system for continuous unattended operation.  The Watchdog Control Center featuring MAM capability expands third party application \"control\" of a Watchdog as access to the application's source code is no longer needed.  Here is how it all works: Upon installation of the application and Watchdog, the user may select many configuration options, based on their model of Watchdog, to fit their operational needs.  If the MAM feature is enabled, the user may select any executable program that they wish for monitoring.  A lock up of the operating system or if any one of the selected applications is not running, the MAM feature, in conjunction with the Watchdog, will reset the system allowing for continuous operation.  It's that simple!  Watchdog Control Center is supported on most Microsoft Windows platforms (Win9x/WinNT/Win2k) and includes a Linux version for PCI Programmable Watchdogs.  Watchdog Control Center Features: - Automated installation - Controls all Outsource Engineering Watchdogs - User selectable Watchdog timeout period - User selectable Watchdog stroke interval - Multiple Application Monitoring  Included on the Installation CD: - Watchdog Control Center - Watchdog Drivers - Documentation  For more information, please visit out website at <a href=\"http://www.outsrc-em.com/\" rel=\"noopener noreferrer\" target=\"_blank\">http://www.outsrc-em.com/</a> or send an e-mail to <a href=\"&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#97;&#108;&#101;&#115;&#64;&#111;&#117;&#116;&#115;&#114;&#99;&#45;&#101;&#109;&#46;&#99;&#111;&#109;\">&#115;&#97;&#108;&#101;&#115;&#64;&#111;&#117;&#116;&#115;&#114;&#99;&#45;&#101;&#109;&#46;&#99;&#111;&#109;</a>  </span></span></div><div style='flex: 1'><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">new product announcement   new product announcement     : <em>org</em> <em>propn</em>     <em>propn</em> / <em>propn</em> ;     note   inform   new watchdog board technology  maintain   continuous unattended operation  <em>propn</em> / server etc .    release    distribution .        proud  announce <em>product</em> feature <em>propn</em> ( <em>propn</em>   <em>propn</em> <em>propn</em> ) capability .    key feature   application enable   monitor     application      resident   computer     operate system    continuous unattended operation .   <em>org</em> feature   <em>propn</em> capability expand  party application \" control \"   <em>product</em>    access   application    source code   long need .         work :    installation   application  <em>product</em> ,  user  select    configuration option , base   model  <em>product</em> ,  fit    operational need .     <em>propn</em> feature  enable ,  user  select    executable program   wish  monitoring .     lock    operate system       select   application   run ,  <em>propn</em> feature ,    conjunction   <em>product</em> ,  reset  system allow    continuous operation .       simple !    <em>product</em>  support   <em>org</em> <em>product</em> platform   ( <em>product</em> / <em>product</em> )  include  <em>product</em> version  <em>product</em> <em>propn</em> .    <em>product</em> feature :   - automate installation   - control  <em>product</em>   - user selectable <em>product</em> timeout period   - user selectable <em>product</em> stroke interval   - multiple application <em>propn</em>    include   installation cd :   - <em>product</em>   - <em>propn</em> driver   - documentation      information ,  visit  website    <em>url</em>  send  e - mail  <em>email</em>   </span></span></div></div><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Stop word ratio: 0.31547619047619047</span></span><div style='display: flex;flex: 1;flex-direction: row;justify-content: space-between;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><marimo-ui-element object-id='ZBYS-2' random-id='e59ddf67-4dd2-3c0a-7dea-c525e9bf4ab1'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;word&#92;&quot;:&#92;&quot;new&#92;&quot;,&#92;&quot;idx&#92;&quot;:45},{&#92;&quot;word&#92;&quot;:&#92;&quot;product&#92;&quot;,&#92;&quot;idx&#92;&quot;:54},{&#92;&quot;word&#92;&quot;:&#92;&quot;announcement&#92;&quot;,&#92;&quot;idx&#92;&quot;:8},{&#92;&quot;word&#92;&quot;:&#92;&quot;_org_&#92;&quot;,&#92;&quot;idx&#92;&quot;:1},{&#92;&quot;word&#92;&quot;:&#92;&quot;_propn_&#92;&quot;,&#92;&quot;idx&#92;&quot;:3},{&#92;&quot;word&#92;&quot;:&#92;&quot;note&#92;&quot;,&#92;&quot;idx&#92;&quot;:46},{&#92;&quot;word&#92;&quot;:&#92;&quot;inform&#92;&quot;,&#92;&quot;idx&#92;&quot;:31},{&#92;&quot;word&#92;&quot;:&#92;&quot;watchdog&#92;&quot;,&#92;&quot;idx&#92;&quot;:76},{&#92;&quot;word&#92;&quot;:&#92;&quot;board&#92;&quot;,&#92;&quot;idx&#92;&quot;:12},{&#92;&quot;word&#92;&quot;:&#92;&quot;technology&#92;&quot;,&#92;&quot;idx&#92;&quot;:70}]&quot;' data-total-rows='80' data-total-columns='2' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-selection='&quot;multi&quot;' data-show-filters='false' data-show-download='true' data-show-column-summaries='true' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element><marimo-ui-element object-id='ZBYS-0' random-id='5ca12cb6-ce54-f18e-be25-b53bc316976c'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;Token&#92;&quot;:&#92;&quot;New&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;new&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;ADJ&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;JJ&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;Product&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;product&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;NOUN&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;NN&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;Announcement&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;announcement&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;NOUN&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;NN&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;&#92;&#92;n&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;&#92;&#92;n&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;SPACE&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;_SP&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;NEW&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;new&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;ADJ&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;JJ&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;PRODUCT&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;product&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;NOUN&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;NN&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;ANNOUNCEMENT&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;announcement&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;NOUN&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;NN&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;&#92;&#92;n&#92;&#92;n&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;&#92;&#92;n&#92;&#92;n&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;SPACE&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;_SP&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;From&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;from&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;ADP&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;IN&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:true,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false},{&#92;&quot;Token&#92;&quot;:&#92;&quot;:&#92;&quot;,&#92;&quot;Lemma&#92;&quot;:&#92;&quot;:&#92;&quot;,&#92;&quot;PoS&#92;&quot;:&#92;&quot;PUNCT&#92;&quot;,&#92;&quot;Tag&#92;&quot;:&#92;&quot;:&#92;&quot;,&#92;&quot;Entity&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;Stop word&#92;&quot;:false,&#92;&quot;URL&#92;&quot;:false,&#92;&quot;Email&#92;&quot;:false}]&quot;' data-total-rows='336' data-total-columns='8' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-selection='&quot;multi&quot;' data-show-filters='false' data-show-download='true' data-show-column-summaries='true' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element><marimo-ui-element object-id='ZBYS-1' random-id='a3e0a521-33ad-04ee-1090-14fc4c66ca44'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;Entity&#92;&quot;:&#92;&quot;OUTSOURCE ENG.&amp; MFG. INC&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;ORG&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;Watchdog Control Center&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;PRODUCT&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;The Watchdog Control Center&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;ORG&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;third&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;ORDINAL&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;Watchdog&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;PRODUCT&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;Watchdog&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;PRODUCT&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;Watchdog&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;PRODUCT&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;Watchdog&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;PRODUCT&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;Watchdog Control Center&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;PRODUCT&#92;&quot;},{&#92;&quot;Entity&#92;&quot;:&#92;&quot;Microsoft&#92;&quot;,&#92;&quot;Label&#92;&quot;:&#92;&quot;ORG&#92;&quot;}]&quot;' data-total-rows='20' data-total-columns='2' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-selection='&quot;multi&quot;' data-show-filters='false' data-show-download='true' data-show-column-summaries='true' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element></div></div>"
           }
         }
       ],
       "console": []
     },
     {
-      "id": "nHfw",
-      "code_hash": "e066374170d3d9400def2b28918db6ed",
+      "id": "aLJB",
+      "code_hash": "2fa90d78d289af96821e68120153614f",
       "outputs": [
         {
           "type": "data",
           "data": {
-            "text/plain": ""
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"pre-cleanup\">Pre-cleanup</h3></span>"
           }
         }
       ],
@@ -504,7 +387,7 @@
     },
     {
       "id": "TRpd",
-      "code_hash": "b554d7efa85d9b7c34efa9d76eede092",
+      "code_hash": "2be5c7bf2b3533531c13bcf541685ccd",
       "outputs": [
         {
           "type": "data",
@@ -517,34 +400,132 @@
         {
           "type": "stream",
           "name": "stderr",
-          "text": "\rRunning pre_cleanup:   0%|                                                 | 0/5851 [00:00<?, ?it/s]\rRunning pre_cleanup:  32%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e                       | 1896/5851 [00:00<00:00, 18959.29it/s]\rRunning pre_cleanup:  66%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f           | 3868/5851 [00:00<00:00, 18248.10it/s]\rRunning pre_cleanup:  97%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 | 5696/5851 [00:07<00:00, 561.11it/s]\rRunning pre_cleanup: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 5851/5851 [00:07<00:00, 736.29it/s]\n",
+          "text": "\rRunning pre_cleanup:   0%|                                                 | 0/5851 [00:00<?, ?it/s]\rRunning pre_cleanup:  41%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d                    | 2421/5851 [00:00<00:00, 24205.00it/s]\rRunning pre_cleanup:  83%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c      | 4842/5851 [00:05<00:01, 817.71it/s]\rRunning pre_cleanup: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 5851/5851 [00:08<00:00, 697.87it/s]\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "File: ./datasets/pre_cleaned.gzip\nMD5: 48be76e083002c007728e2ccbf855e6e\n",
           "mimetype": "text/plain"
         }
       ]
     },
     {
-      "id": "dNNg",
-      "code_hash": "5bee987c048eed982f25f697e879fdf3",
+      "id": "TXez",
+      "code_hash": "7d746525288bda534d47c101e99e25c2",
       "outputs": [
         {
           "type": "data",
           "data": {
-            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><marimo-progress data-title='&quot;Running post_cleanup&quot;' data-total='5851' data-progress='321' data-rate='0.6853206248413181' data-eta='8069.22'></marimo-progress></div>"
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"post-cleanup\">Post cleanup</h3></span>"
           }
         }
       ],
       "console": []
     },
     {
-      "id": "wAgl",
-      "code_hash": "4f9526363946743f2e3876c74603c609",
-      "outputs": [],
+      "id": "dNNg",
+      "code_hash": "719797842d4cda5bd9d386a050798974",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "interruption",
+          "evalue": "This cell was interrupted and needs to be re-run",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/tmp/marimo_42487/__marimo__cell_dNNg_.py&quot;</span>, line <span class=\"m\">9</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"k\">for</span> <span class=\"n\">_doc</span> <span class=\"ow\">in</span> <span class=\"n\">nlp</span><span class=\"o\">.</span><span class=\"n\">pipe</span><span class=\"p\">(</span>\n<span class=\"w\">                </span><span class=\"pm\">~~~~~~~~^</span>\n<span class=\"w\">    </span>    <span class=\"n\">texts</span><span class=\"o\">=</span><span class=\"n\">pre_cleaned_df</span><span class=\"p\">[</span><span class=\"mi\">0</span><span class=\"p\">]</span><span class=\"o\">.</span><span class=\"n\">tolist</span><span class=\"p\">(),</span>\n<span class=\"w\">        </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n<span class=\"w\">    </span>    <span class=\"n\">disable</span><span class=\"o\">=</span><span class=\"p\">[</span><span class=\"s2\">&quot;parser&quot;</span><span class=\"p\">],</span>\n<span class=\"w\">        </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^</span>\n<span class=\"w\">    </span>    <span class=\"n\">batch_size</span><span class=\"o\">=</span><span class=\"mi\">1</span>\n<span class=\"w\">        </span><span class=\"pm\">^^^^^^^^^^^^</span>\n<span class=\"w\">    </span><span class=\"p\">):</span>\n<span class=\"w\">    </span><span class=\"pm\">^</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/spacy/language.py&quot;</span>, line <span class=\"m\">1620</span>, in <span class=\"n\">pipe</span>\n<span class=\"w\">    </span><span class=\"k\">for</span> <span class=\"n\">doc</span> <span class=\"ow\">in</span> <span class=\"n\">docs</span><span class=\"p\">:</span>\n<span class=\"w\">               </span><span class=\"pm\">^^^^</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/spacy/util.py&quot;</span>, line <span class=\"m\">1771</span>, in <span class=\"n\">_pipe</span>\n<span class=\"w\">    </span><span class=\"k\">for</span> <span class=\"n\">doc</span> <span class=\"ow\">in</span> <span class=\"n\">docs</span><span class=\"p\">:</span>\n<span class=\"w\">               </span><span class=\"pm\">^^^^</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/spacy/util.py&quot;</span>, line <span class=\"m\">1761</span>, in <span class=\"n\">_pipe</span>\n<span class=\"w\">    </span><span class=\"k\">yield from</span> <span class=\"n\">proc</span><span class=\"o\">.</span><span class=\"n\">pipe</span><span class=\"p\">(</span><span class=\"n\">docs</span><span class=\"p\">,</span> <span class=\"o\">**</span><span class=\"n\">kwargs</span><span class=\"p\">)</span>\n  File <span class=\"nb\">&quot;spacy/pipeline/transition_parser.pyx&quot;</span>, line <span class=\"m\">245</span>, in <span class=\"n\">pipe</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/spacy/util.py&quot;</span>, line <span class=\"m\">1708</span>, in <span class=\"n\">minibatch</span>\n<span class=\"w\">    </span><span class=\"n\">batch</span> <span class=\"o\">=</span> <span class=\"nb\">list</span><span class=\"p\">(</span><span class=\"n\">itertools</span><span class=\"o\">.</span><span class=\"n\">islice</span><span class=\"p\">(</span><span class=\"n\">items</span><span class=\"p\">,</span> <span class=\"nb\">int</span><span class=\"p\">(</span><span class=\"n\">batch_size</span><span class=\"p\">)))</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/spacy/util.py&quot;</span>, line <span class=\"m\">1761</span>, in <span class=\"n\">_pipe</span>\n<span class=\"w\">    </span><span class=\"k\">yield from</span> <span class=\"n\">proc</span><span class=\"o\">.</span><span class=\"n\">pipe</span><span class=\"p\">(</span><span class=\"n\">docs</span><span class=\"p\">,</span> <span class=\"o\">**</span><span class=\"n\">kwargs</span><span class=\"p\">)</span>\n  File <span class=\"nb\">&quot;spacy/pipeline/pipe.pyx&quot;</span>, line <span class=\"m\">48</span>, in <span class=\"n\">pipe</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/spacy/util.py&quot;</span>, line <span class=\"m\">1761</span>, in <span class=\"n\">_pipe</span>\n<span class=\"w\">    </span><span class=\"k\">yield from</span> <span class=\"n\">proc</span><span class=\"o\">.</span><span class=\"n\">pipe</span><span class=\"p\">(</span><span class=\"n\">docs</span><span class=\"p\">,</span> <span class=\"o\">**</span><span class=\"n\">kwargs</span><span class=\"p\">)</span>\n  File <span class=\"nb\">&quot;spacy/pipeline/pipe.pyx&quot;</span>, line <span class=\"m\">48</span>, in <span class=\"n\">pipe</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/spacy/util.py&quot;</span>, line <span class=\"m\">1761</span>, in <span class=\"n\">_pipe</span>\n<span class=\"w\">    </span><span class=\"k\">yield from</span> <span class=\"n\">proc</span><span class=\"o\">.</span><span class=\"n\">pipe</span><span class=\"p\">(</span><span class=\"n\">docs</span><span class=\"p\">,</span> <span class=\"o\">**</span><span class=\"n\">kwargs</span><span class=\"p\">)</span>\n  File <span class=\"nb\">&quot;spacy/pipeline/pipe.pyx&quot;</span>, line <span class=\"m\">48</span>, in <span class=\"n\">pipe</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/spacy/util.py&quot;</span>, line <span class=\"m\">1761</span>, in <span class=\"n\">_pipe</span>\n<span class=\"w\">    </span><span class=\"k\">yield from</span> <span class=\"n\">proc</span><span class=\"o\">.</span><span class=\"n\">pipe</span><span class=\"p\">(</span><span class=\"n\">docs</span><span class=\"p\">,</span> <span class=\"o\">**</span><span class=\"n\">kwargs</span><span class=\"p\">)</span>\n  File <span class=\"nb\">&quot;spacy/pipeline/trainable_pipe.pyx&quot;</span>, line <span class=\"m\">73</span>, in <span class=\"n\">pipe</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/spacy/util.py&quot;</span>, line <span class=\"m\">1708</span>, in <span class=\"n\">minibatch</span>\n<span class=\"w\">    </span><span class=\"n\">batch</span> <span class=\"o\">=</span> <span class=\"nb\">list</span><span class=\"p\">(</span><span class=\"n\">itertools</span><span class=\"o\">.</span><span class=\"n\">islice</span><span class=\"p\">(</span><span class=\"n\">items</span><span class=\"p\">,</span> <span class=\"nb\">int</span><span class=\"p\">(</span><span class=\"n\">batch_size</span><span class=\"p\">)))</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/spacy/util.py&quot;</span>, line <span class=\"m\">1761</span>, in <span class=\"n\">_pipe</span>\n<span class=\"w\">    </span><span class=\"k\">yield from</span> <span class=\"n\">proc</span><span class=\"o\">.</span><span class=\"n\">pipe</span><span class=\"p\">(</span><span class=\"n\">docs</span><span class=\"p\">,</span> <span class=\"o\">**</span><span class=\"n\">kwargs</span><span class=\"p\">)</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/spacy_curated_transformers/pipeline/transformer.py&quot;</span>, line <span class=\"m\">210</span>, in <span class=\"n\">pipe</span>\n<span class=\"w\">    </span><span class=\"n\">preds</span> <span class=\"o\">=</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">predict</span><span class=\"p\">(</span><span class=\"n\">batch</span><span class=\"p\">)</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/spacy_curated_transformers/pipeline/transformer.py&quot;</span>, line <span class=\"m\">242</span>, in <span class=\"n\">predict</span>\n<span class=\"w\">    </span><span class=\"k\">return</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">model</span><span class=\"o\">.</span><span class=\"n\">predict</span><span class=\"p\">(</span><span class=\"n\">docs</span><span class=\"p\">)</span>\n<span class=\"w\">           </span><span class=\"pm\">~~~~~~~~~~~~~~~~~~^^^^^^</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/thinc/model.py&quot;</span>, line <span class=\"m\">334</span>, in <span class=\"n\">predict</span>\n<span class=\"w\">    </span><span class=\"k\">return</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_func</span><span class=\"p\">(</span><span class=\"bp\">self</span><span class=\"p\">,</span> <span class=\"n\">X</span><span class=\"p\">,</span> <span class=\"n\">is_train</span><span class=\"o\">=</span><span class=\"kc\">False</span><span class=\"p\">)[</span><span class=\"mi\">0</span><span class=\"p\">]</span>\n<span class=\"w\">           </span><span class=\"pm\">~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/spacy_curated_transformers/models/architectures.py&quot;</span>, line <span class=\"m\">651</span>, in <span class=\"n\">transformer_model_forward</span>\n<span class=\"w\">    </span><span class=\"n\">Y</span><span class=\"p\">,</span> <span class=\"n\">backprop_layer</span> <span class=\"o\">=</span> <span class=\"n\">model</span><span class=\"o\">.</span><span class=\"n\">layers</span><span class=\"p\">[</span><span class=\"mi\">0</span><span class=\"p\">](</span><span class=\"n\">docs</span><span class=\"p\">,</span> <span class=\"n\">is_train</span><span class=\"o\">=</span><span class=\"n\">is_train</span><span class=\"p\">)</span>\n<span class=\"w\">                        </span><span class=\"pm\">~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/thinc/model.py&quot;</span>, line <span class=\"m\">310</span>, in <span class=\"n\">__call__</span>\n<span class=\"w\">    </span><span class=\"k\">return</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_func</span><span class=\"p\">(</span><span class=\"bp\">self</span><span class=\"p\">,</span> <span class=\"n\">X</span><span class=\"p\">,</span> <span class=\"n\">is_train</span><span class=\"o\">=</span><span class=\"n\">is_train</span><span class=\"p\">)</span>\n<span class=\"w\">           </span><span class=\"pm\">~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/spacy_curated_transformers/models/with_non_ws_tokens.py&quot;</span>, line <span class=\"m\">100</span>, in <span class=\"n\">with_non_ws_tokens_forward</span>\n<span class=\"w\">    </span><span class=\"n\">Y</span><span class=\"p\">,</span> <span class=\"n\">backprop</span> <span class=\"o\">=</span> <span class=\"n\">inner</span><span class=\"p\">(</span><span class=\"n\">X</span><span class=\"p\">,</span> <span class=\"n\">is_train</span><span class=\"o\">=</span><span class=\"n\">is_train</span><span class=\"p\">)</span>\n<span class=\"w\">                  </span><span class=\"pm\">~~~~~^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/thinc/model.py&quot;</span>, line <span class=\"m\">310</span>, in <span class=\"n\">__call__</span>\n<span class=\"w\">    </span><span class=\"k\">return</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_func</span><span class=\"p\">(</span><span class=\"bp\">self</span><span class=\"p\">,</span> <span class=\"n\">X</span><span class=\"p\">,</span> <span class=\"n\">is_train</span><span class=\"o\">=</span><span class=\"n\">is_train</span><span class=\"p\">)</span>\n<span class=\"w\">           </span><span class=\"pm\">~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/thinc/layers/chain.py&quot;</span>, line <span class=\"m\">54</span>, in <span class=\"n\">forward</span>\n<span class=\"w\">    </span><span class=\"n\">Y</span><span class=\"p\">,</span> <span class=\"n\">inc_layer_grad</span> <span class=\"o\">=</span> <span class=\"n\">layer</span><span class=\"p\">(</span><span class=\"n\">X</span><span class=\"p\">,</span> <span class=\"n\">is_train</span><span class=\"o\">=</span><span class=\"n\">is_train</span><span class=\"p\">)</span>\n<span class=\"w\">                        </span><span class=\"pm\">~~~~~^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/thinc/model.py&quot;</span>, line <span class=\"m\">310</span>, in <span class=\"n\">__call__</span>\n<span class=\"w\">    </span><span class=\"k\">return</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_func</span><span class=\"p\">(</span><span class=\"bp\">self</span><span class=\"p\">,</span> <span class=\"n\">X</span><span class=\"p\">,</span> <span class=\"n\">is_train</span><span class=\"o\">=</span><span class=\"n\">is_train</span><span class=\"p\">)</span>\n<span class=\"w\">           </span><span class=\"pm\">~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/spacy_curated_transformers/models/with_strided_spans.py&quot;</span>, line <span class=\"m\">108</span>, in <span class=\"n\">with_strided_spans_forward</span>\n<span class=\"w\">    </span><span class=\"n\">output</span><span class=\"p\">,</span> <span class=\"n\">bp</span> <span class=\"o\">=</span> <span class=\"n\">transformer</span><span class=\"p\">(</span><span class=\"n\">cast</span><span class=\"p\">(</span><span class=\"n\">TorchTransformerInT</span><span class=\"p\">,</span> <span class=\"n\">batch</span><span class=\"p\">),</span> <span class=\"n\">is_train</span><span class=\"o\">=</span><span class=\"n\">is_train</span><span class=\"p\">)</span>\n<span class=\"w\">                 </span><span class=\"pm\">~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/thinc/model.py&quot;</span>, line <span class=\"m\">310</span>, in <span class=\"n\">__call__</span>\n<span class=\"w\">    </span><span class=\"k\">return</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_func</span><span class=\"p\">(</span><span class=\"bp\">self</span><span class=\"p\">,</span> <span class=\"n\">X</span><span class=\"p\">,</span> <span class=\"n\">is_train</span><span class=\"o\">=</span><span class=\"n\">is_train</span><span class=\"p\">)</span>\n<span class=\"w\">           </span><span class=\"pm\">~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/thinc/layers/pytorchwrapper.py&quot;</span>, line <span class=\"m\">225</span>, in <span class=\"n\">forward</span>\n<span class=\"w\">    </span><span class=\"n\">Ytorch</span><span class=\"p\">,</span> <span class=\"n\">torch_backprop</span> <span class=\"o\">=</span> <span class=\"n\">model</span><span class=\"o\">.</span><span class=\"n\">shims</span><span class=\"p\">[</span><span class=\"mi\">0</span><span class=\"p\">](</span><span class=\"n\">Xtorch</span><span class=\"p\">,</span> <span class=\"n\">is_train</span><span class=\"p\">)</span>\n<span class=\"w\">                             </span><span class=\"pm\">~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/thinc/shims/pytorch.py&quot;</span>, line <span class=\"m\">97</span>, in <span class=\"n\">__call__</span>\n<span class=\"w\">    </span><span class=\"k\">return</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">predict</span><span class=\"p\">(</span><span class=\"n\">inputs</span><span class=\"p\">),</span> <span class=\"k\">lambda</span> <span class=\"n\">a</span><span class=\"p\">:</span> <span class=\"o\">...</span>\n<span class=\"w\">           </span><span class=\"pm\">~~~~~~~~~~~~^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/thinc/shims/pytorch.py&quot;</span>, line <span class=\"m\">112</span>, in <span class=\"n\">predict</span>\n<span class=\"w\">    </span><span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_model</span><span class=\"o\">.</span><span class=\"n\">eval</span><span class=\"p\">()</span>\n<span class=\"w\">    </span><span class=\"pm\">~~~~~~~~~~~~~~~~^^</span>\n  File <span class=\"nb\">&quot;/nix/store/mihg62xdv7b5hi5zfxg90zsj1yjvkj1k-python3-3.13.9-env/lib/python3.13/site-packages/torch/nn/modules/module.py&quot;</span>, line <span class=\"m\">2910</span>, in <span class=\"n\">eval</span>\n<span class=\"w\">    </span><span class=\"k\">return</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">train</span><span class=\"p\">(</span><span class=\"kc\">False</span><span class=\"p\">)</span>\n<span class=\"w\">           </span><span class=\"pm\">~~~~~~~~~~^^^^^^^</span>\n  File <span class=\"nb\">&quot;/nix/store/mihg62xdv7b5hi5zfxg90zsj1yjvkj1k-python3-3.13.9-env/lib/python3.13/site-packages/torch/nn/modules/module.py&quot;</span>, line <span class=\"m\">2891</span>, in <span class=\"n\">train</span>\n<span class=\"w\">    </span><span class=\"n\">module</span><span class=\"o\">.</span><span class=\"n\">train</span><span class=\"p\">(</span><span class=\"n\">mode</span><span class=\"p\">)</span>\n<span class=\"w\">    </span><span class=\"pm\">~~~~~~~~~~~~^^^^^^</span>\n  File <span class=\"nb\">&quot;/nix/store/mihg62xdv7b5hi5zfxg90zsj1yjvkj1k-python3-3.13.9-env/lib/python3.13/site-packages/torch/nn/modules/module.py&quot;</span>, line <span class=\"m\">2891</span>, in <span class=\"n\">train</span>\n<span class=\"w\">    </span><span class=\"n\">module</span><span class=\"o\">.</span><span class=\"n\">train</span><span class=\"p\">(</span><span class=\"n\">mode</span><span class=\"p\">)</span>\n<span class=\"w\">    </span><span class=\"pm\">~~~~~~~~~~~~^^^^^^</span>\n  File <span class=\"nb\">&quot;/nix/store/mihg62xdv7b5hi5zfxg90zsj1yjvkj1k-python3-3.13.9-env/lib/python3.13/site-packages/torch/nn/modules/module.py&quot;</span>, line <span class=\"m\">2891</span>, in <span class=\"n\">train</span>\n<span class=\"w\">    </span><span class=\"n\">module</span><span class=\"o\">.</span><span class=\"n\">train</span><span class=\"p\">(</span><span class=\"n\">mode</span><span class=\"p\">)</span>\n<span class=\"w\">    </span><span class=\"pm\">~~~~~~~~~~~~^^^^^^</span>\n<span class=\"gr\">  [Previous line repeated 2 more times]</span>\n<span class=\"gr\">  File &quot;/nix/store/mihg62xdv7b5hi5zfxg90zsj1yjvkj1k-python3-3.13.9-env/lib/python3.13/site-packages/torch/nn/modules/module.py&quot;, line 2872, in train</span>\n<span class=\"gr\">    def train(self, mode</span>: <span class=\"n\">bool = True) -&gt; Self:</span>\n<span class=\"x\">    </span>\n  File <span class=\"nb\">&quot;/home/w/W/1_school/WS2025/ML_Lab/.venv/lib/python3.13/site-packages/marimo/_runtime/handlers.py&quot;</span>, line <span class=\"m\">48</span>, in <span class=\"n\">interrupt_handler</span>\n<span class=\"w\">    </span><span class=\"k\">raise</span> <span class=\"n\">MarimoInterrupt</span>\n<span class=\"gr\">KeyboardInterrupt</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "nHfw",
+      "code_hash": "c37f1b21f06f727ef2bfca1283c21d52",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "hqUp",
+      "code_hash": "c7b8547d84dd24847f5b3cbb19513ddb",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "yCnT",
+      "code_hash": "47ca681e3a3e6ce3802d4ccb8c91c7f4",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"features-engineering\">Features engineering</h1></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "wlCL",
+      "code_hash": "477e5009a62690c9f97652b2bbb3a0c7",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"additional-features-to-consider\">Additional features to consider</h2>\n<ul>\n<li><del>Contains HTML (boolean)</del></li>\n<li>Number of links (share the same token with links in text)</li>\n<li><del>Number of special characters</del> Might not be a good feature</li>\n<li>Capitals ratio</li>\n<li><del>Email size</del> (maybe not)</li>\n<li>Reply ratio, reply depth count</li>\n<li>Stop word ratio</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "kqZH",
+      "code_hash": "120ebd22e377833b2394552a85b72b5c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"capitals-ratio\">Capitals ratio</h3></span>"
+          }
+        }
+      ],
       "console": []
     },
     {
       "id": "rEll",
       "code_hash": "fe2fe9655f763a257af679a4303ac676",
       "outputs": [],
+      "console": []
+    },
+    {
+      "id": "dGlV",
+      "code_hash": "86d0da8586edc21d41e0da08e1d8efd0",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"number-of-special-characters\">Number of special characters</h3></span>"
+          }
+        }
+      ],
       "console": []
     },
     {
@@ -560,9 +541,42 @@
       "console": []
     },
     {
+      "id": "yOPj",
+      "code_hash": "82b1d433f45399fd6077e2af5ddc8f49",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"random-stuff\">Random stuff</h1></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
       "id": "fwwy",
       "code_hash": "a18b658fd9ad472bcf980e383b96b4a1",
-      "outputs": [],
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='fwwy-0' random-id='4608bf9a-52cc-5159-f0d9-3f602eaba183'><marimo-dataframe data-initial-value='{&quot;transforms&quot;:[]}' data-label='null' data-columns='[[&quot;text&quot;,&quot;string&quot;,&quot;object&quot;]]' data-dataframe-name='&quot;pre_cleaned_df&quot;' data-total='5851' data-page-size='5' data-show-download='true'></marimo-dataframe></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "LJZf",
+      "code_hash": "a043d2ac40d190c054ee013d3587a101",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"beautiful-soup-playground\">Beautiful Soup playground</h2></span>"
+          }
+        }
+      ],
       "console": []
     },
     {
@@ -581,6 +595,19 @@
       "id": "mWxS",
       "code_hash": "6be7601d3f73ef3295cf5b705a2b38d0",
       "outputs": [],
+      "console": []
+    },
+    {
+      "id": "CcZR",
+      "code_hash": "d60c9870e230ae729e3608cf7266aa25",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"re2-playground\">RE2 playground</h2></span>"
+          }
+        }
+      ],
       "console": []
     },
     {

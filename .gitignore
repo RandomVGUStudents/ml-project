@@ -11,4 +11,9 @@ wheels/
 .direnv
 
 # Will be downloaded
-datasets
+datasets/easy_ham
+datasets/easy_ham_2
+datasets/hard_ham
+datasets/spam
+datasets/spam_2
+

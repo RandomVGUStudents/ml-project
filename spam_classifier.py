@@ -213,6 +213,10 @@ def _():
         'orig': {
             'description': "Dataset without preprocessing (6046 entries)",
             'checksum': "6ab4e23a696aeac72ad3b38396666a25"
+        },
+        'pre_cleaned': {
+            'description': "Dataset after pre-cleanup (5851 entries)",
+            'checksum': "48be76e083002c007728e2ccbf855e6e"
         }
     }
     return (dataset_checkpoints,)
@@ -239,6 +243,7 @@ def _(dataset_checkpoints, dataset_dir):
 def _(dataset_dir, dataset_source, load_dataset, save_dataset):
     try:
         df = load_dataset('orig')
+    
     except (FileNotFoundError, ValueError) as e:
         data = {
             'subject': [],
@@ -293,7 +298,7 @@ def _(dataset_dir):
         )
 
         hash = hashlib.md5(open(path, 'rb').read()).hexdigest()
-        mo.md(f"File: {path}\nMD5: {hash}")
+        print(f"File: {path}\nMD5: {hash}")
     return (save_dataset,)
 
 
@@ -396,25 +401,8 @@ def _(
     _text_2 = random_cleanup(_text)
     _text_3 = artifact_cleanup(_text_2)
 
-
     _doc = nlp(_text_3)
-
-
-    # with _doc.retokenize() as retokenizer:
-    #     for ent in _doc.ents:
-    #         if ent.label_ in ["DATE", "TIME", "MONEY"]:
-    #             retokenizer.merge(ent)
-    # 
-    #     for match in email_pattern.finditer(_doc.text):
-    #         span = _doc.char_span(match.start(), match.end())
-    #         if span is not None:
-    #             retokenizer.merge(span)
-
-        # for match in url_pattern.finditer(_doc.text):
-        #     span = _doc.char_span(match.start(), match.end())
-        #     print(span)
-        #     if span is not None:
-        #         retokenizer.merge(span)
+    _newtext = nlp_pipeline(_doc)
 
 
     _table2 = mo.ui.table(
@@ -437,11 +425,6 @@ def _(
             'Label': ent.label_
         } for ent in _doc.ents],
         pagination=True
-    )
-
-
-    _newtext = " ".join(
-        [token_processor(token) for token in _doc]
     )
 
 
@@ -477,27 +460,6 @@ def _():
     ### Pre-cleanup
     """)
     return
-
-
-@app.function(hide_code=True)
-def token_processor(token: spacy.tokens.Token) -> str:
-    if token.is_stop:
-        return ""
-
-    if token.like_url:
-        return "_URL_"
-    if (token.like_email) or (token.text.startswith("<") and "@" in token.text and token.text.endswith(">")):
-        return "_EMAIL_"
-
-    if token.ent_type_ not in ["", "CARDINAL", "ORDINAL"]:
-        return f"_{token.ent_type_}_"
-
-    if token.pos_ == "PROPN":
-        return "_PROPN_"
-    if token.pos_ == "NUM":
-        return "_NUM_"
-    else:
-        return token.lemma_.lower()
 
 
 @app.cell(hide_code=True)
@@ -551,7 +513,6 @@ def _():
         return soup.get_text(separator=" ", strip=True)
     return (
         artifact_cleanup,
-        email_pattern,
         html_cleanup,
         random_cleanup,
         subject_cleanup,
@@ -650,15 +611,22 @@ def _(artifact_cleanup, random_cleanup, subject_cleanup):
 
 
 @app.cell(hide_code=True)
-def _(deduplicated_df, pre_cleanup):
-    tqdm.pandas(desc="Running pre_cleanup", ncols=100)
-
-    pre_cleaned_df = pd.DataFrame(
-        deduplicated_df.progress_apply(
-            lambda x: pre_cleanup(x['subject'], x['text'], x['html']),
-            axis=1
-        )
-    )
+def _(deduplicated_df, load_dataset, pre_cleanup, save_dataset):
+    try:
+        pre_cleaned_df = load_dataset('pre_cleaned')
+    
+    except (FileNotFoundError, ValueError) as e:
+        tqdm.pandas(desc="Running pre_cleanup", ncols=100)
+    
+        pre_cleaned_df = pd.DataFrame({
+            'cleaned_content': deduplicated_df.progress_apply(
+                lambda x: pre_cleanup(x['subject'], x['text'], x['html']),
+                axis=1
+            ),
+            'label': deduplicated_df['label']
+        })
+    
+        save_dataset(pre_cleaned_df, 'pre_cleaned')
     return (pre_cleaned_df,)
 
 
@@ -671,37 +639,72 @@ def _():
 
 
 @app.cell
-def _(email_pattern, pre_cleaned_df):
-    post_cleaned_emails = []
+def _(load_dataset, pre_cleaned_df, save_dataset):
+    try:
+        post_cleaned_df = load_dataset('post_cleaned')
+    
+    except (FileNotFoundError, ValueError) as e:
+        _post_cleaned_emails = []
+    
+        _post_cleanup_status = mo.status.progress_bar(
+            title="Running post_cleanup",
+            total=len(pre_cleaned_df)
+        )
+    
+        with _post_cleanup_status as _bar:
+            for _doc in nlp.pipe(
+                texts=pre_cleaned_df[0].tolist(),
+                disable=["parser"]
+            ):
+                _post_cleaned_emails.append(nlp_pipeline(_doc))
+    
+                _bar.update()
+    
+        post_cleaned_df = pd.DataFrame({
+            'text': _post_cleaned_emails,
+            'label': pre_cleaned_df['label']
+        })
 
-    _post_cleanup_status = mo.status.progress_bar(
-        title="Running post_cleanup",
-        total=len(pre_cleaned_df)
-    )
-
-    with _post_cleanup_status as _bar:
-        for _doc in nlp.pipe(
-            texts=pre_cleaned_df[0].tolist(),
-            disable=["parser"]
-        ):
-            with _doc.retokenize() as _retokenizer:
-    #             for _ent in _doc.ents:
-    #                 if _ent.label_ in ["DATE", "TIME", "MONEY"]:
-    #                     _retokenizer.merge(_ent)
-
-                for _match in email_pattern.finditer(_doc.text):
-                    _span = _doc.char_span(_match.start(), _match.end())
-                    if _span is not None:
-                        _retokenizer.merge(_span)
-
-            _clean_text = " ".join(
-                [token_processor(token) for token in _doc]
-            )
-
-            post_cleaned_emails.append(_clean_text)
-
-            _bar.update()
+        save_dataset(post_cleaned_df, 'post_cleaned')
     return
+
+
+@app.function(hide_code=True)
+def token_processor(token: spacy.tokens.Token) -> str:
+    if token.is_stop:
+        return ""
+
+    if token.like_url:
+        return "_url_"
+    if (token.like_email) or (token.text.startswith("<") and "@" in token.text and token.text.endswith(">")):
+        return "_email_"
+
+    if token.ent_type_ not in ["", "CARDINAL", "ORDINAL"]:
+        return f"_{token.ent_type_}_".lower()
+
+    if token.pos_ == "PROPN":
+        return "_propn_"
+    if token.pos_ == "NUM":
+        return "_num_"
+    else:
+        return token.lemma_
+
+
+@app.function(hide_code=True)
+def nlp_pipeline(doc: spacy.tokens.Doc) -> str:
+    #with doc.retokenize() as retokenizer:
+    #    for ent in doc.ents:
+    #        if ent.label_ in ["DATE", "TIME", "MONEY"]:
+    #            retokenizer.merge(ent)
+    
+    #    for match in email_pattern.finditer(doc.text):
+    #        span = doc.char_span(match.start(), match.end())
+    #        if span is not None:
+    #            retokenizer.merge(span)
+
+    return " ".join(
+        [token_processor(token) for token in doc]
+    )
 
 
 @app.cell(hide_code=True)
@@ -717,11 +720,11 @@ def _():
     mo.md(r"""
     ## Additional features to consider
 
-    - Contains HTML (boolean)
+    - ~~Contains HTML (boolean)~~
     - Number of links (share the same token with links in text)
     - ~~Number of special characters~~ Might not be a good feature
     - Capitals ratio
-    - Email size (maybe not)
+    - ~~Email size~~ (maybe not)
     - Reply ratio, reply depth count
     - Stop word ratio
     """)
@@ -731,28 +734,18 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ### Number of links
+    ### Capitals ratio
     """)
     return
 
 
-@app.cell
-def _(url_pattern):
-    def count_links(text: typing.Optional[str] = None, html: typing.Optional[str] = None):
-        if text is not None:
-            return len(url_pattern.findall(text))
+@app.function
+def calc_capitals_ratio(text: str) -> float:
+    if len(text) == 0:
+        return 0.0
 
-        if html is not None:
-            soup = BeautifulSoup(html, 'html5lib')
-            soup.find_all('a')
-            return 
-    return (count_links,)
-
-
-@app.cell
-def _(count_links, df):
-    df['html'].apply(count_links)
-    return
+    capitals_count = sum(1 for c in text if c.isupper())
+    return capitals_count / len(text)
 
 
 @app.cell(hide_code=True)
