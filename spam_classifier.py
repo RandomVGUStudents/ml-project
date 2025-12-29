@@ -3,28 +3,23 @@ import marimo
 __generated_with = "0.18.4"
 app = marimo.App(width="full")
 
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ## Import some libs
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _():
+with app.setup:
+    # Import some libs
     import glob
     import hashlib
+    import mailparser
+    import marimo as mo
+    import numpy as np
     import os
     import re
     import re2
+    #import seaborn
     import spacy
     import spacy_transformers
     import tarfile
+    from tqdm.auto import tqdm
     import typing
     import wget
-    import mailparser
     import pandas as pd
 
     from dateutil import parser
@@ -32,27 +27,9 @@ def _():
     from collections import Counter
     from math import sqrt
     from sklearn.feature_extraction.text import TfidfVectorizer
-    return (
-        BeautifulSoup,
-        Counter,
-        TfidfVectorizer,
-        glob,
-        hashlib,
-        mailparser,
-        os,
-        pd,
-        re,
-        re2,
-        spacy,
-        sqrt,
-        tarfile,
-        typing,
-        wget,
-    )
 
 
-@app.cell
-def _(spacy):
+    # Load NLP module
     #nlp = spacy.load("en_core_web_lg")
     nlp = spacy.load("en_core_web_trf")
     nlp.add_pipe("merge_entities", after="ner")
@@ -62,11 +39,10 @@ def _(spacy):
         {"label": "TIME", "pattern": [{"SHAPE": "dd:dd:dd"}]},
     ]
     ruler.add_patterns(patterns)
-    return (nlp,)
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     # Data acquisition & preprocessing
     """)
@@ -74,7 +50,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     ## Download dataset
     """)
@@ -82,14 +58,14 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     ### Define dataset source
     """)
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _():
     dataset_source = {
         'easy_ham': {
@@ -121,8 +97,8 @@ def _():
     return (dataset_source,)
 
 
-@app.cell
-def _(os, tarfile, wget):
+@app.cell(hide_code=True)
+def _():
     dataset_dir = "./datasets/"
 
 
@@ -138,15 +114,15 @@ def _(os, tarfile, wget):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     ### Check dataset integrity
     """)
     return
 
 
-@app.cell
-def _(dataset_dir, dataset_source, download_dataset, hashlib, mo, os):
+@app.cell(hide_code=True)
+def _(dataset_dir, dataset_source, download_dataset):
     if not os.path.exists(dataset_dir):
         os.mkdir(dataset_dir)
 
@@ -179,7 +155,7 @@ def _(dataset_dir, dataset_source, download_dataset, hashlib, mo, os):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     ## Viewing some emails
     """)
@@ -187,7 +163,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(glob, mo):
+def _():
     mails = glob.glob("./datasets/*/*", recursive=True)
     idx = mo.ui.number(start=0, stop=len(mails) - 1, label="Number")
     return idx, mails
@@ -200,7 +176,7 @@ def _(idx):
 
 
 @app.cell(hide_code=True)
-def _(idx, mailparser, mails, mo):
+def _(idx, mails):
     mail = mailparser.parse_from_file(mails[idx.value])
 
 
@@ -224,14 +200,14 @@ def _(idx, mailparser, mails, mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     ## Load whole dataset
     """)
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _():
     dataset_checkpoints = {
         'orig': {
@@ -242,8 +218,8 @@ def _():
     return (dataset_checkpoints,)
 
 
-@app.cell
-def _(dataset_checkpoints, dataset_dir, hashlib, os, pd):
+@app.cell(hide_code=True)
+def _(dataset_checkpoints, dataset_dir):
     def load_dataset(checkpoint: str) -> pd.DataFrame:
         dataset_path = os.path.join(dataset_dir, f"{checkpoint}.gzip")
 
@@ -259,17 +235,8 @@ def _(dataset_checkpoints, dataset_dir, hashlib, os, pd):
     return (load_dataset,)
 
 
-@app.cell
-def _(
-    dataset_dir,
-    dataset_source,
-    load_dataset,
-    mailparser,
-    mo,
-    os,
-    pd,
-    save_dataset,
-):
+@app.cell(hide_code=True)
+def _(dataset_dir, dataset_source, load_dataset, save_dataset):
     try:
         df = load_dataset('orig')
     except (FileNotFoundError, ValueError) as e:
@@ -309,15 +276,15 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     ### Save dataset
     """)
     return
 
 
-@app.cell
-def _(dataset_dir, hashlib, mo, os, pd):
+@app.cell(hide_code=True)
+def _(dataset_dir):
     def save_dataset(df: pd.DataFrame, checkpoint_name: str):
         path = os.path.join(dataset_dir, f"{checkpoint_name}.gzip")
         df.to_parquet(
@@ -330,14 +297,14 @@ def _(dataset_dir, hashlib, mo, os, pd):
     return (save_dataset,)
 
 
-@app.cell
-def _(hashlib):
+@app.cell(hide_code=True)
+def _():
     hashlib.md5(open("./datasets/orig.gzip", 'rb').read()).hexdigest()
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     ## Preprocess email
 
@@ -348,8 +315,8 @@ def _(mo):
     return
 
 
-@app.cell
-def _(mo):
+@app.cell(hide_code=True)
+def _():
     mo.md(r"""
     ### Data exploration notes
 
@@ -382,7 +349,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     ### Remove duplicates
     """)
@@ -391,7 +358,15 @@ def _(mo):
 
 @app.cell
 def _(df):
-    df.drop_duplicates(subset=['text', 'html'], inplace=True)
+    deduplicated_df = df.drop_duplicates(subset=['text', 'html'])
+    return (deduplicated_df,)
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ### Preprocess preview
+    """)
     return
 
 
@@ -403,26 +378,20 @@ def _(idx):
 
 @app.cell(hide_code=True)
 def _(
-    TfidfVectorizer,
     artifact_cleanup,
-    df,
-    email_pattern,
+    deduplicated_df,
     html_cleanup,
     idx,
-    merge_text_html,
-    mo,
-    nlp,
     random_cleanup,
-    spacy,
     subject_cleanup,
 ):
     _tfidf = TfidfVectorizer()
-    _entry = df.iloc[idx.value]
+    _entry = deduplicated_df.iloc[idx.value]
 
     _clean_subj = subject_cleanup(_entry['subject'])
     _clean_html = html_cleanup(_entry['html'])
     _merged_text = merge_text_html(_entry['text'],_entry['html'])
-    _text = f"{_clean_subj}\n{_merged_text['str']}"
+    _text = f"{_clean_subj}\n{_merged_text}"
 
     _text_2 = random_cleanup(_text)
     _text_3 = artifact_cleanup(_text_2)
@@ -431,15 +400,15 @@ def _(
     _doc = nlp(_text_3)
 
 
-    with _doc.retokenize() as retokenizer:
-        for ent in _doc.ents:
-            if ent.label_ in ["DATE", "TIME", "MONEY"]:
-                retokenizer.merge(ent)
-
-        for match in email_pattern.finditer(_doc.text):
-            span = _doc.char_span(match.start(), match.end())
-            if span is not None:
-                retokenizer.merge(span)
+    # with _doc.retokenize() as retokenizer:
+    #     for ent in _doc.ents:
+    #         if ent.label_ in ["DATE", "TIME", "MONEY"]:
+    #             retokenizer.merge(ent)
+    # 
+    #     for match in email_pattern.finditer(_doc.text):
+    #         span = _doc.char_span(match.start(), match.end())
+    #         if span is not None:
+    #             retokenizer.merge(span)
 
         # for match in url_pattern.finditer(_doc.text):
         #     span = _doc.char_span(match.start(), match.end())
@@ -471,26 +440,6 @@ def _(
     )
 
 
-    def token_processor(token: spacy.tokens.Token) -> str:
-        if token.is_stop:
-            return ""
-
-        if token.like_url:
-            return "_URL_"
-        if (token.like_email) or (token.text.startswith("<") and "@" in token.text and token.text.endswith(">")):
-            return "_EMAIL_"
-
-        if token.ent_type_ not in ["", "CARDINAL", "ORDINAL"]:
-            return f"_{token.ent_type_}_"
-
-        if token.pos_ == "PROPN":
-            return "_PROPN_"
-        if token.pos_ == "NUM":
-            return "_NUM_"
-        else:
-            return token.lemma_.lower()
-
-
     _newtext = " ".join(
         [token_processor(token) for token in _doc]
     )
@@ -506,13 +455,12 @@ def _(
             mo.md(f"Label: {"Ham" if _entry['label'] == 0 else "Spam"}"),
             mo.hstack(
                 [
-                    mo.md(f"{_clean_subj}\n{_merged_text['str']}".replace("\n", " ")),
+                    mo.md(f"{_clean_subj}\n{_merged_text}".replace("\n", " ")),
                     mo.md(_text_3.replace("\n", " ")),
                     mo.md(_newtext.replace("\n", " "))
                 ],
                 widths="equal"
             ),
-            mo.md(f"URL count: {_merged_text['link_count']}"), # If there's still URLs, add it to _URL_ token count.
             mo.md(f"Stop word ratio: {len([tok for tok in _doc if tok.is_stop]) / _doc.__len__()}"),
             mo.hstack([
                 _table,
@@ -523,69 +471,38 @@ def _(
     return
 
 
-@app.cell
-def _(Counter, sqrt):
-    def cosine_similarity(s1: str, s2: str) -> float:
-        if len(s1) == 0 or len(s2) == 0:
-            return 0.0
-
-        # Convert strings to character frequency vectors
-        vec1 = Counter(s1)
-        vec2 = Counter(s2)
-
-        # Calculating cosine similarity
-        dot_product = sum(vec1[ch] * vec2[ch] for ch in vec1)
-        magnitude1 = sqrt(sum(count ** 2 for count in vec1.values()))
-        magnitude2 = sqrt(sum(count ** 2 for count in vec2.values()))
-        return dot_product / (magnitude1 * magnitude2)
-    return (cosine_similarity,)
-
-
-@app.cell
-def _(BeautifulSoup, cosine_similarity, url_pattern):
-    def merge_text_html(text: str, html: str, threshold = 0.95) -> object:
-        merged_text = {
-            'str': "",
-            'link_count': len(url_pattern.findall(text))
-        }
-
-        if len(html) != 0:
-            soup = BeautifulSoup(html, 'html5lib')
-            clean_html = soup.get_text(separator=" ", strip=True)
-        
-            if len(text) == 0:
-                merged_text['str'] = clean_html.replace("\n", " ")
-                merged_text['link_count'] += len(soup.find_all('a'))
-            
-            else:
-                text_no_url = url_pattern.sub(string=text, repl="")
-                similarity = cosine_similarity(text_no_url, clean_html)
-                print(similarity)
-            
-                if similarity >= threshold:
-                    merged_text['str'] = text_no_url
-            
-                else:
-                    merged_text['str'] = f"{text_no_url}\n{clean_html}"
-                    merged_text['link_count'] += len(soup.find_all('a'))
-
-        else:
-            merged_text['str'] = url_pattern.sub(string=text, repl="")
-
-        return merged_text
-    return (merge_text_html,)
-
-
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     ### Pre-cleanup
     """)
     return
 
 
-@app.cell
-def _(BeautifulSoup, pd, re, re2):
+@app.function(hide_code=True)
+def token_processor(token: spacy.tokens.Token) -> str:
+    if token.is_stop:
+        return ""
+
+    if token.like_url:
+        return "_URL_"
+    if (token.like_email) or (token.text.startswith("<") and "@" in token.text and token.text.endswith(">")):
+        return "_EMAIL_"
+
+    if token.ent_type_ not in ["", "CARDINAL", "ORDINAL"]:
+        return f"_{token.ent_type_}_"
+
+    if token.pos_ == "PROPN":
+        return "_PROPN_"
+    if token.pos_ == "NUM":
+        return "_NUM_"
+    else:
+        return token.lemma_.lower()
+
+
+@app.cell(hide_code=True)
+def _():
+    # Remove some "---", "###", "***", etc.
     unamed_pattern = re2.compile(
         r"[-#*_=+]{3,}"
     )
@@ -598,6 +515,7 @@ def _(BeautifulSoup, pd, re, re2):
         r"<[^>]+@[^>]+>"
     )
 
+    # Remove mailing list information
     subject_cleanup_pattern = re2.compile(
         r"\[.*?\]",
     )
@@ -615,20 +533,13 @@ def _(BeautifulSoup, pd, re, re2):
             repl=""
         )
 
+
     def subject_cleanup(text: str) -> str:
         return re2.sub(
             pattern=subject_cleanup_pattern,
             text=text,
             repl=""
         ).strip()
-
-
-    def footer_cleanup(text):
-        pass
-
-
-    def trim(text):
-        return text.strip("\n")
 
 
     def html_cleanup(html):
@@ -648,14 +559,153 @@ def _(BeautifulSoup, pd, re, re2):
     )
 
 
+@app.function(hide_code=True)
+def cosine_similarity(s1: str, s2: str) -> float:
+    if len(s1) == 0 or len(s2) == 0:
+        return 0.0
+
+    # Convert strings to character frequency vectors
+    vec1 = Counter(s1)
+    vec2 = Counter(s2)
+
+    # Calculating cosine similarity
+    dot_product = sum(vec1[ch] * vec2[ch] for ch in vec1)
+    magnitude1 = sqrt(sum(count ** 2 for count in vec1.values()))
+    magnitude2 = sqrt(sum(count ** 2 for count in vec2.values()))
+    return dot_product / (magnitude1 * magnitude2)
+
+
+@app.cell(hide_code=True)
+def _(url_pattern):
+    def _merge_text_html(text: str, html: str, threshold = 0.95):
+        merged_text = {
+            'str': "",
+            'link_count': len(url_pattern.findall(text))
+        }
+
+        if len(html) != 0:
+            soup = BeautifulSoup(html, 'html5lib')
+            clean_html = soup.get_text(separator=" ", strip=True)
+
+            if len(text) == 0:
+                merged_text['str'] = clean_html.replace("\n", " ")
+                merged_text['link_count'] += len(soup.find_all('a'))
+
+            else:
+                text_no_url = url_pattern.sub(string=text, repl="")
+                similarity = cosine_similarity(text_no_url, clean_html)
+                # print(similarity)
+
+                if similarity >= threshold:
+                    merged_text['str'] = text_no_url
+
+                else:
+                    merged_text['str'] = f"{text_no_url}\n{clean_html}"
+                    merged_text['link_count'] += len(soup.find_all('a'))
+
+        else:
+            merged_text['str'] = url_pattern.sub(string=text, repl="")
+
+        return merged_text
+    return
+
+
+@app.function(hide_code=True)
+def merge_text_html(text: str, html: str, threshold = 0.95) -> str:
+    if len(html) != 0:
+        soup = BeautifulSoup(html, 'html5lib')
+        clean_html = soup.get_text(separator=" ", strip=True)
+
+        # Artificially add _URL_ tokens
+        clean_html += " google.com" * len(soup.find_all('a'))
+
+        if len(text) == 0:
+            return clean_html
+
+        else:
+            similarity = cosine_similarity(text, clean_html)
+
+            if similarity >= threshold:
+                return text
+
+            else:
+                return f"{text}\n{clean_html}"
+
+    else:
+        return text
+
+
+@app.cell(hide_code=True)
+def _(artifact_cleanup, random_cleanup, subject_cleanup):
+    def pre_cleanup(subject: str, text: str, html: str):
+        clean_subj = subject_cleanup(subject)
+        merged_text = merge_text_html(text, html)
+
+        pass_1 = f"{clean_subj}\n{merged_text}"
+        pass_2 = random_cleanup(pass_1)
+        pass_3 = artifact_cleanup(pass_2)
+
+        return pass_3
+    return (pre_cleanup,)
+
+
+@app.cell(hide_code=True)
+def _(deduplicated_df, pre_cleanup):
+    tqdm.pandas(desc="Running pre_cleanup", ncols=100)
+
+    pre_cleaned_df = pd.DataFrame(
+        deduplicated_df.progress_apply(
+            lambda x: pre_cleanup(x['subject'], x['text'], x['html']),
+            axis=1
+        )
+    )
+    return (pre_cleaned_df,)
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ### Post cleanup
+    """)
+    return
+
+
 @app.cell
-def _(df, html_cleanup):
-    df['html'].apply(html_cleanup)
+def _(email_pattern, pre_cleaned_df):
+    post_cleaned_emails = []
+
+    _post_cleanup_status = mo.status.progress_bar(
+        title="Running post_cleanup",
+        total=len(pre_cleaned_df)
+    )
+
+    with _post_cleanup_status as _bar:
+        for _doc in nlp.pipe(
+            texts=pre_cleaned_df[0].tolist(),
+            disable=["parser"]
+        ):
+            with _doc.retokenize() as _retokenizer:
+    #             for _ent in _doc.ents:
+    #                 if _ent.label_ in ["DATE", "TIME", "MONEY"]:
+    #                     _retokenizer.merge(_ent)
+
+                for _match in email_pattern.finditer(_doc.text):
+                    _span = _doc.char_span(_match.start(), _match.end())
+                    if _span is not None:
+                        _retokenizer.merge(_span)
+
+            _clean_text = " ".join(
+                [token_processor(token) for token in _doc]
+            )
+
+            post_cleaned_emails.append(_clean_text)
+
+            _bar.update()
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     # Features engineering
     """)
@@ -663,7 +713,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     ## Additional features to consider
 
@@ -679,7 +729,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     ### Number of links
     """)
@@ -687,7 +737,7 @@ def _(mo):
 
 
 @app.cell
-def _(BeautifulSoup, typing, url_pattern):
+def _(url_pattern):
     def count_links(text: typing.Optional[str] = None, html: typing.Optional[str] = None):
         if text is not None:
             return len(url_pattern.findall(text))
@@ -706,7 +756,7 @@ def _(count_links, df):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     ### Number of special characters
     """)
@@ -726,7 +776,7 @@ def _(df):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     # Random stuff
     """)
@@ -734,19 +784,13 @@ def _(mo):
 
 
 @app.cell
-def _():
-    import marimo as mo
-    return (mo,)
-
-
-@app.cell
-def _(df, mo):
-    mo.ui.dataframe(df)
+def _(pre_cleaned_df):
+    mo.ui.dataframe(pre_cleaned_df)
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     ## Beautiful Soup playground
     """)
@@ -754,14 +798,14 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     html_input = mo.ui.text_area(placeholder="Paste HTML code...", full_width=True)
     html_input 
     return (html_input,)
 
 
 @app.cell(hide_code=True)
-def _(BeautifulSoup, html_input):
+def _(html_input):
     soup = BeautifulSoup(html_input.value, 'html5lib')
     cleaned_html = soup.get_text(separator=" ", strip=True)
     print(cleaned_html)
@@ -775,7 +819,7 @@ def _(count_links, html_input):
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def _():
     mo.md(r"""
     ## RE2 playground
     """)
@@ -783,21 +827,21 @@ def _(mo):
 
 
 @app.cell
-def _(mo):
+def _():
     text_input = mo.ui.text_area(placeholder="Paste text...", full_width=True)
     text_input
     return (text_input,)
 
 
 @app.cell
-def _(mo):
+def _():
     regex_input = mo.ui.text(placeholder="Regex", full_width=True)
     regex_input
     return (regex_input,)
 
 
 @app.cell
-def _(re2, regex_input, text_input):
+def _(regex_input, text_input):
     re2.sub(pattern=regex_input.value, text=text_input.value, repl="")
     return
 
