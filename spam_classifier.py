@@ -5,19 +5,20 @@ app = marimo.App(width="full")
 
 with app.setup:
     # Import some libs
+    import altair as alt
     import glob
     import hashlib
     import mailparser
     import marimo as mo
+    import matplotlib.pyplot as plt
     import numpy as np
     import os
     import re
     import re2
-    #import seaborn
+    import seaborn as sns
     import spacy
     import spacy_transformers
     import tarfile
-    from tqdm.auto import tqdm
     import typing
     import wget
     import pandas as pd
@@ -27,6 +28,10 @@ with app.setup:
     from collections import Counter
     from math import sqrt
     from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.model_selection import train_test_split
+    from sklearn.linear_model import LogisticRegression
+    from sklearn import metrics
+    from tqdm.auto import tqdm
 
 
     # Load NLP module
@@ -217,6 +222,10 @@ def _():
         'pre_cleaned': {
             'description': "Dataset after pre-cleanup (5851 entries)",
             'checksum': "48be76e083002c007728e2ccbf855e6e"
+        },
+        'post_cleaned': {
+            'description': "Dataset after post-cleanup (5851 entries)",
+            'checksum': "aeee585d4a832eee0ce9dace5c2f8ac1"
         }
     }
     return (dataset_checkpoints,)
@@ -243,7 +252,7 @@ def _(dataset_checkpoints, dataset_dir):
 def _(dataset_dir, dataset_source, load_dataset, save_dataset):
     try:
         df = load_dataset('orig')
-    
+
     except (FileNotFoundError, ValueError) as e:
         data = {
             'subject': [],
@@ -411,6 +420,7 @@ def _(
             'Lemma': token.lemma_,
             'PoS': token.pos_,
             'Tag': token.tag_,
+            'Tag (explain)': spacy.explain(token.tag_),
             'Entity': token.ent_type_,
             'Stop word': token.is_stop,
             'URL': token.like_url,
@@ -427,6 +437,9 @@ def _(
         pagination=True
     )
 
+
+    if len(_newtext) == 0:
+        _newtext = "_<EMPTY>_"
 
     _results = _tfidf.fit_transform([_newtext])
     _vocab = [{'word': _word, 'idx': _idx} for _word, _idx in _tfidf.vocabulary_.items()]
@@ -614,18 +627,18 @@ def _(artifact_cleanup, random_cleanup, subject_cleanup):
 def _(deduplicated_df, load_dataset, pre_cleanup, save_dataset):
     try:
         pre_cleaned_df = load_dataset('pre_cleaned')
-    
+
     except (FileNotFoundError, ValueError) as e:
         tqdm.pandas(desc="Running pre_cleanup", ncols=100)
-    
+
         pre_cleaned_df = pd.DataFrame({
-            'cleaned_content': deduplicated_df.progress_apply(
+            'text': deduplicated_df.progress_apply(
                 lambda x: pre_cleanup(x['subject'], x['text'], x['html']),
                 axis=1
             ),
             'label': deduplicated_df['label']
         })
-    
+
         save_dataset(pre_cleaned_df, 'pre_cleaned')
     return (pre_cleaned_df,)
 
@@ -642,31 +655,34 @@ def _():
 def _(load_dataset, pre_cleaned_df, save_dataset):
     try:
         post_cleaned_df = load_dataset('post_cleaned')
-    
+
     except (FileNotFoundError, ValueError) as e:
         _post_cleaned_emails = []
-    
+
         _post_cleanup_status = mo.status.progress_bar(
             title="Running post_cleanup",
             total=len(pre_cleaned_df)
         )
-    
+
         with _post_cleanup_status as _bar:
             for _doc in nlp.pipe(
-                texts=pre_cleaned_df[0].tolist(),
+                texts=pre_cleaned_df['text'].tolist(),
                 disable=["parser"]
             ):
                 _post_cleaned_emails.append(nlp_pipeline(_doc))
-    
+
                 _bar.update()
-    
+
         post_cleaned_df = pd.DataFrame({
             'text': _post_cleaned_emails,
             'label': pre_cleaned_df['label']
         })
 
+        pre_cleaned_df[post_cleaned_df['text'] == ""]
+        post_cleaned_df = post_cleaned_df[post_cleaned_df['text'] != ""].reset_index(drop=True)
+
         save_dataset(post_cleaned_df, 'post_cleaned')
-    return
+    return (post_cleaned_df,)
 
 
 @app.function(hide_code=True)
@@ -686,21 +702,30 @@ def token_processor(token: spacy.tokens.Token) -> str:
         return "_propn_"
     if token.pos_ == "NUM":
         return "_num_"
+
+    if token.tag_ == "LS":
+        return ""
+        
     else:
         return token.lemma_
 
 
 @app.function(hide_code=True)
-def nlp_pipeline(doc: spacy.tokens.Doc) -> str:
+def nlp_pipeline(doc: spacy.tokens.Doc, stop_threshold = 0.01) -> str:
     #with doc.retokenize() as retokenizer:
     #    for ent in doc.ents:
     #        if ent.label_ in ["DATE", "TIME", "MONEY"]:
     #            retokenizer.merge(ent)
-    
+
     #    for match in email_pattern.finditer(doc.text):
     #        span = doc.char_span(match.start(), match.end())
     #        if span is not None:
     #            retokenizer.merge(span)
+
+    # Treat as spam
+    stop_word_ratio = len([token for token in doc if token.is_stop]) / doc.__len__()
+    if stop_word_ratio < stop_threshold:
+        return ""
 
     return " ".join(
         [token_processor(token) for token in doc]
@@ -765,6 +790,143 @@ def count_special_chars(text):
 @app.cell
 def _(df):
     df['text'].apply(count_special_chars)
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ### TF-IDF
+    """)
+    return
+
+
+@app.cell
+def _(post_cleaned_df):
+    vectorizer = TfidfVectorizer()
+
+    # Fit the vectorizer to the data and transform it into a TF-IDF matrix
+    tfidf_matrix = vectorizer.fit_transform(post_cleaned_df['text'])
+    tfidf_df = pd.DataFrame(tfidf_matrix.toarray(), columns=vectorizer.get_feature_names_out())
+    return (tfidf_df,)
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ## Train time
+    """)
+    return
+
+
+@app.cell
+def _(post_cleaned_df, tfidf_df):
+    X = tfidf_df
+    y = post_cleaned_df['label']
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+    logreg = LogisticRegression(max_iter=1000)
+    logreg.fit(X_train, y_train)
+
+    y_pred = logreg.predict(X_test)
+    return logreg, y_pred, y_test
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ## Confusion time
+    """)
+    return
+
+
+@app.cell
+def _(y_pred, y_test):
+    cnf_matrix = metrics.confusion_matrix(y_test, y_pred)
+    cnf_matrix
+
+    class_names=[0,1] # name  of classes
+    fig, ax = plt.subplots()
+    tick_marks = np.arange(len(class_names))
+    plt.xticks(tick_marks, class_names)
+    plt.yticks(tick_marks, class_names)
+
+    # create heatmap
+    sns.heatmap(pd.DataFrame(cnf_matrix), annot=True, cmap="YlGnBu" ,fmt='g')
+    ax.xaxis.set_label_position("top")
+    plt.tight_layout()
+    plt.title('Confusion matrix', y=1.1)
+    plt.ylabel('Actual label')
+    plt.xlabel('Predicted label')
+    return
+
+
+@app.cell
+def _(y_pred, y_test):
+    target_names = ["Ham", "Spam"]
+    print(metrics.classification_report(y_test, y_pred, target_names=target_names))
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ## Model analysis
+    """)
+    return
+
+
+@app.cell
+def _(logreg, tfidf_df):
+    features_df = pd.DataFrame({
+        'word': tfidf_df.columns,
+        'weight': logreg.coef_[0]
+    })
+
+
+    top_spam = features_df.nlargest(20, 'weight')
+    top_ham = features_df.nsmallest(20, 'weight')
+
+
+    plot_df = pd.concat([
+        top_spam.assign(type='Spam'),
+        top_ham.assign(type='Ham')
+    ])
+
+    plot_df['type'] = plot_df['weight'].apply(lambda x: 'Spam' if x > 0 else 'Ham')
+    return top_ham, top_spam
+
+
+@app.cell
+def _(top_ham, top_spam):
+    mo.hstack(
+        [
+            mo.ui.altair_chart(
+                alt.Chart(top_ham).mark_bar().encode(
+                    x='weight:Q',
+                    y=alt.Y('word:N', sort='null'),
+                    color=alt.Color('weight:Q', scale=alt.Scale(scheme='greens', reverse=True, type='log')),
+                    tooltip=['word', 'weight']
+                ).properties(
+                    title="Ham words",
+                    height=600
+                )
+            ),
+            mo.ui.altair_chart(
+                alt.Chart(top_spam).mark_bar().encode(
+                    x='weight:Q',
+                    y=alt.Y('word:N', sort='null'),
+                    color=alt.Color('weight:Q', scale=alt.Scale(scheme='reds', type='log')),
+                    tooltip=['word', 'weight']
+                ).properties(
+                    title="Spam words",
+                    height=600
+                )
+            )
+        ],
+        justify='center',
+        widths="equal")
     return
 
 

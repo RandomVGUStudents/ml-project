@@ -5,6 +5,7 @@ description = "Spam email classifier"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "altair>=6.0.0",
     "beautifulsoup4>=4.14.3",
     "datasets==3.6.0",
     "en-core-web-lg",
@@ -15,17 +16,12 @@ dependencies = [
     "marimo[recommended]>=0.18.4",
     "pyarrow>=22.0.0",
     "scikit-learn>=1.8.0",
+    "seaborn>=0.13.2",
     "spacy>=3.8.11",
     "spacy-transformers>=1.3.9",
     "wget>=3.2",
 ]
 
-[[tool.uv.index]]
-name = "pytorch-cpu"
-url = "https://download.pytorch.org/whl/cpu"
-explicit = true
-
 [tool.uv.sources]
 en-core-web-lg = { url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.8.0/en_core_web_lg-3.8.0-py3-none-any.whl" }
 en-core-web-trf = { url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.8.0/en_core_web_trf-3.8.0-py3-none-any.whl" }
-torch = { index = "pytorch-cpu" }
