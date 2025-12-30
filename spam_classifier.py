@@ -1,7 +1,11 @@
 import marimo
 
 __generated_with = "0.18.4"
-app = marimo.App(width="full")
+app = marimo.App(
+    width="full",
+    app_title="Spam Classifier",
+    auto_download=["ipynb", "html"],
+)
 
 with app.setup:
     # Import some libs
@@ -36,6 +40,7 @@ with app.setup:
 
     # Load NLP module
     #nlp = spacy.load("en_core_web_lg")
+    print(spacy.prefer_gpu())
     nlp = spacy.load("en_core_web_trf")
     nlp.add_pipe("merge_entities", after="ner")
 
@@ -192,7 +197,7 @@ def _(idx, mails):
 
     ---
 
-    {mail.text_plain}
+    {"---\n\n---".join(mail.text_plain)}
 
     ---
 
@@ -212,7 +217,7 @@ def _():
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _():
     dataset_checkpoints = {
         'orig': {
@@ -221,11 +226,11 @@ def _():
         },
         'pre_cleaned': {
             'description': "Dataset after pre-cleanup (5851 entries)",
-            'checksum': "48be76e083002c007728e2ccbf855e6e"
+            'checksum': "589f556bc02bdeaa376ca92a99e9755c"
         },
         'post_cleaned': {
             'description': "Dataset after post-cleanup (5851 entries)",
-            'checksum': "aeee585d4a832eee0ce9dace5c2f8ac1"
+            'checksum': "d972cc17841c34ed3f73c1bd3e3fad62"
         }
     }
     return (dataset_checkpoints,)
@@ -358,6 +363,7 @@ def _():
     - ~~Email replies appear with `> ` or `--] `, and "On DATE, USER wrote:"~~ Nvm, it's pretty random.
     - Mailling list (or some name) in subject that is not filtered (like ilug)
     - Entity labels exclusion: "CARDINAL", "ORDINAL"
+    - Some emails are malformed, they are extremely long
     """)
     return
 
@@ -396,7 +402,8 @@ def _(
     deduplicated_df,
     html_cleanup,
     idx,
-    random_cleanup,
+    merge_text_html,
+    nlp_pipeline,
     subject_cleanup,
 ):
     _tfidf = TfidfVectorizer()
@@ -407,8 +414,8 @@ def _(
     _merged_text = merge_text_html(_entry['text'],_entry['html'])
     _text = f"{_clean_subj}\n{_merged_text}"
 
-    _text_2 = random_cleanup(_text)
-    _text_3 = artifact_cleanup(_text_2)
+    #_text_2 = random_cleanup(_text)
+    _text_3 = artifact_cleanup(_text)
 
     _doc = nlp(_text_3)
     _newtext = nlp_pipeline(_doc)
@@ -475,38 +482,21 @@ def _():
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _():
-    # Remove some "---", "###", "***", etc.
-    unamed_pattern = re2.compile(
-        r"[-#*_=+]{3,}"
-    )
-
     url_pattern = re.compile(
         r"((http|ftp|https):\/\/)?([\w_-]+(?:\.[\w_-]+)*\.[a-zA-Z_-][\w_-]+)([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])"
     )
 
-    email_pattern = re.compile(
-        r"<[^>]+@[^>]+>"
-    )
-
     # Remove mailing list information
     subject_cleanup_pattern = re2.compile(
-        r"\[.*?\]",
+        r"\[.*?\]"
     )
 
 
     def artifact_cleanup(text):
         artifact = "--DeathToSpamDeathToSpamDeathToSpam--"
         return text.replace(artifact, "")
-
-
-    def random_cleanup(text: str) -> str:
-        return re2.sub(
-            pattern=unamed_pattern,
-            text=text,
-            repl=""
-        )
 
 
     def subject_cleanup(text: str) -> str:
@@ -523,14 +513,9 @@ def _():
 
         soup = BeautifulSoup(html, 'html5lib')
 
-        return soup.get_text(separator=" ", strip=True)
-    return (
-        artifact_cleanup,
-        html_cleanup,
-        random_cleanup,
-        subject_cleanup,
-        url_pattern,
-    )
+        # Artificially add _URL_ tokens
+        return soup.get_text(separator=" ", strip=True) + " google.com" * len(soup.find_all('a'))
+    return artifact_cleanup, html_cleanup, subject_cleanup
 
 
 @app.function(hide_code=True)
@@ -549,83 +534,49 @@ def cosine_similarity(s1: str, s2: str) -> float:
     return dot_product / (magnitude1 * magnitude2)
 
 
-@app.cell(hide_code=True)
-def _(url_pattern):
-    def _merge_text_html(text: str, html: str, threshold = 0.95):
-        merged_text = {
-            'str': "",
-            'link_count': len(url_pattern.findall(text))
-        }
-
+@app.cell
+def _(html_cleanup):
+    def merge_text_html(text: str, html: str, threshold = 0.95) -> str:
         if len(html) != 0:
-            soup = BeautifulSoup(html, 'html5lib')
-            clean_html = soup.get_text(separator=" ", strip=True)
+            html = html_cleanup(html)
 
+            # Some texts has leftover HTML somehow
+            text = html_cleanup(text)
+        
             if len(text) == 0:
-                merged_text['str'] = clean_html.replace("\n", " ")
-                merged_text['link_count'] += len(soup.find_all('a'))
+                return html
 
             else:
-                text_no_url = url_pattern.sub(string=text, repl="")
-                similarity = cosine_similarity(text_no_url, clean_html)
-                # print(similarity)
+                similarity = cosine_similarity(text, html)
 
                 if similarity >= threshold:
-                    merged_text['str'] = text_no_url
+                    return text
 
                 else:
-                    merged_text['str'] = f"{text_no_url}\n{clean_html}"
-                    merged_text['link_count'] += len(soup.find_all('a'))
+                    return f"{text}\n{html}"
 
         else:
-            merged_text['str'] = url_pattern.sub(string=text, repl="")
-
-        return merged_text
-    return
-
-
-@app.function(hide_code=True)
-def merge_text_html(text: str, html: str, threshold = 0.95) -> str:
-    if len(html) != 0:
-        soup = BeautifulSoup(html, 'html5lib')
-        clean_html = soup.get_text(separator=" ", strip=True)
-
-        # Artificially add _URL_ tokens
-        clean_html += " google.com" * len(soup.find_all('a'))
-
-        if len(text) == 0:
-            return clean_html
-
-        else:
-            similarity = cosine_similarity(text, clean_html)
-
-            if similarity >= threshold:
-                return text
-
-            else:
-                return f"{text}\n{clean_html}"
-
-    else:
-        return text
+            return html_cleanup(text)
+    return (merge_text_html,)
 
 
 @app.cell(hide_code=True)
-def _(artifact_cleanup, random_cleanup, subject_cleanup):
+def _(artifact_cleanup, merge_text_html, subject_cleanup):
     def pre_cleanup(subject: str, text: str, html: str):
         clean_subj = subject_cleanup(subject)
         merged_text = merge_text_html(text, html)
 
         pass_1 = f"{clean_subj}\n{merged_text}"
-        pass_2 = random_cleanup(pass_1)
-        pass_3 = artifact_cleanup(pass_2)
+        pass_2 = artifact_cleanup(pass_1)
 
-        return pass_3
+        return pass_2
     return (pre_cleanup,)
 
 
 @app.cell(hide_code=True)
 def _(deduplicated_df, load_dataset, pre_cleanup, save_dataset):
     try:
+        #raise(ValueError("Code changed. Rebuilding dataset..."))
         pre_cleaned_df = load_dataset('pre_cleaned')
 
     except (FileNotFoundError, ValueError) as e:
@@ -652,12 +603,64 @@ def _():
 
 
 @app.cell
-def _(load_dataset, pre_cleaned_df, save_dataset):
+def _():
+    # Email matching
+    email_pattern = re2.compile(
+        r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+    )
+
+    pgp_signature_pattern = re2.compile(
+        r"(?s)-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----"
+    )
+    return email_pattern, pgp_signature_pattern
+
+
+@app.cell
+def _():
+    import torch
+
+    MAX_CHAR_LENGTH = 15000
+
+
+    def process_batches(nlp, texts, batch_size=None):
+        for i, doc in enumerate(nlp.pipe(
+            texts,
+            batch_size=batch_size,
+            disable=["parser"]
+        )):
+            doc._.trf_data = None
+
+            yield doc
+
+            if i % batch_size == 0:
+                torch.cuda.empty_cache()
+    return MAX_CHAR_LENGTH, process_batches
+
+
+@app.cell
+def _(
+    MAX_CHAR_LENGTH,
+    load_dataset,
+    nlp_pipeline,
+    pre_cleaned_df,
+    process_batches,
+    save_dataset,
+):
     try:
+        #raise(ValueError("Code changed. Rebuilding dataset..."))
         post_cleaned_df = load_dataset('post_cleaned')
 
     except (FileNotFoundError, ValueError) as e:
         _post_cleaned_emails = []
+        _truncated_texts = []
+        _skipped_idx = []
+
+        for i, row in pre_cleaned_df.iterrows():
+            if len(row['text']) > MAX_CHAR_LENGTH:
+                _skipped_idx.append(i)
+                _truncated_texts.append(row['text'][:MAX_CHAR_LENGTH])
+            else:
+                _truncated_texts.append(row['text'])
 
         _post_cleanup_status = mo.status.progress_bar(
             title="Running post_cleanup",
@@ -665,9 +668,10 @@ def _(load_dataset, pre_cleaned_df, save_dataset):
         )
 
         with _post_cleanup_status as _bar:
-            for _doc in nlp.pipe(
-                texts=pre_cleaned_df['text'].tolist(),
-                disable=["parser"]
+            for _doc in process_batches(
+                nlp=nlp,
+                texts=_truncated_texts,
+                batch_size=5
             ):
                 _post_cleaned_emails.append(nlp_pipeline(_doc))
 
@@ -692,7 +696,7 @@ def token_processor(token: spacy.tokens.Token) -> str:
 
     if token.like_url:
         return "_url_"
-    if (token.like_email) or (token.text.startswith("<") and "@" in token.text and token.text.endswith(">")):
+    if token.like_email:
         return "_email_"
 
     if token.ent_type_ not in ["", "CARDINAL", "ORDINAL"]:
@@ -705,31 +709,57 @@ def token_processor(token: spacy.tokens.Token) -> str:
 
     if token.tag_ == "LS":
         return ""
-        
+    if (token.pos_ == "X") and (token.tag_ == "FW"):
+        return "_foreign_"
+
     else:
         return token.lemma_
 
 
-@app.function(hide_code=True)
-def nlp_pipeline(doc: spacy.tokens.Doc, stop_threshold = 0.01) -> str:
-    #with doc.retokenize() as retokenizer:
-    #    for ent in doc.ents:
-    #        if ent.label_ in ["DATE", "TIME", "MONEY"]:
-    #            retokenizer.merge(ent)
+@app.cell(hide_code=True)
+def _(email_pattern, pgp_signature_pattern):
+    def nlp_pipeline(doc: spacy.tokens.Doc, stop_threshold = 0.01) -> str:
+        with doc.retokenize() as retokenizer:
+            for match in email_pattern.finditer(doc.text):
+                span = doc.char_span(
+                    match.start(),
+                    match.end(),
+                    alignment_mode='expand'
+                )
 
-    #    for match in email_pattern.finditer(doc.text):
-    #        span = doc.char_span(match.start(), match.end())
-    #        if span is not None:
-    #            retokenizer.merge(span)
+                if span is not None:
+                    retokenizer.merge(span)
+                    for token in span:
+                        token.ent_type_ = "EMAIL"
 
-    # Treat as spam
-    stop_word_ratio = len([token for token in doc if token.is_stop]) / doc.__len__()
-    if stop_word_ratio < stop_threshold:
-        return ""
+        with doc.retokenize() as retokenizer:
+            for match in pgp_signature_pattern.finditer(doc.text):
+                span = doc.char_span(
+                    match.start(),
+                    match.end(),
+                    alignment_mode='expand'
+                )
 
-    return " ".join(
-        [token_processor(token) for token in doc]
-    )
+                if span is not None:
+                    retokenizer.merge(span)
+                    for token in span:
+                        token.ent_type_ = "PGP_SIG"
+
+        with doc.retokenize() as retokenizer:
+            for ent in doc.ents:
+                if ent.label_ in ["DATE", "TIME", "MONEY"]:
+                    retokenizer.merge(ent)
+
+
+        # Treat as spam
+        stop_word_ratio = len([token for token in doc if token.is_stop]) / doc.__len__()
+        if stop_word_ratio < stop_threshold:
+            return ""
+
+        return " ".join(
+            [token_processor(token) for token in doc]
+        )
+    return (nlp_pipeline,)
 
 
 @app.cell(hide_code=True)
@@ -944,6 +974,12 @@ def _(pre_cleaned_df):
     return
 
 
+@app.cell
+def _(pre_cleaned_df):
+    pre_cleaned_df['text'].apply(lambda x: len(x))
+    return
+
+
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
@@ -964,12 +1000,6 @@ def _(html_input):
     soup = BeautifulSoup(html_input.value, 'html5lib')
     cleaned_html = soup.get_text(separator=" ", strip=True)
     print(cleaned_html)
-    return
-
-
-@app.cell
-def _(count_links, html_input):
-    print(count_links(html_input.value))
     return
 
 
