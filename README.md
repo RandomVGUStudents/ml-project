@@ -98,11 +98,12 @@ uv run marimo edit .\spam_classifier.py
 - Run once to download the dataset: section "Check dataset integrity".
 - Run the boxes in "Remove duplicates" section: `df.drop_duplicates(...)`, `idx` and the one below `idx` to view individual emails. Change `idx` to move back and forth.
 - Run the box in "Random stuff": `mo.ui.dataframe(df)` to see the whole dataset.
+- Run the box under "Confusion time" and "Model analysis" to see the training results.
 
 ## TODO
 
 - [x] Download dataset
-- [ ] Preprocess & cleanup
-- [ ] Tokenize & extract features
-- [ ] Train
+- [x] Preprocess & cleanup
+- [x] Tokenize & extract features
+- [x] Train
 - [ ] Write report, presentation, etc.
