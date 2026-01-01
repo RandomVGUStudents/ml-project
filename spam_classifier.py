@@ -8,38 +8,42 @@ app = marimo.App(
 )
 
 with app.setup:
-    # Import some libs
-    import altair as alt
+    import marimo as mo
+
+    # Miscellaneous
     import glob
     import hashlib
-    import mailparser
-    import marimo as mo
-    import matplotlib.pyplot as plt
-    import numpy as np
     import os
-    import re
-    import re2
-    import seaborn as sns
-    import spacy
-    import spacy_transformers
     import tarfile
     import typing
     import wget
-    import pandas as pd
-
-    from dateutil import parser
-    from bs4 import BeautifulSoup
     from collections import Counter
     from math import sqrt
+    from tqdm.auto import tqdm
+
+    # Data processing
+    import numpy as np
+    import re
+    import re2
+    import spacy
+    import spacy_transformers
+    import pandas as pd
+    from bs4 import BeautifulSoup
+    import mailparser
+
+    # Plotting
+    import altair as alt
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    # Scikit-learn
     from sklearn.feature_extraction.text import TfidfVectorizer
     from sklearn.model_selection import train_test_split
     from sklearn.linear_model import LogisticRegression
     from sklearn import metrics
-    from tqdm.auto import tqdm
 
 
     # Load NLP module
-    #nlp = spacy.load("en_core_web_lg")
     print(spacy.prefer_gpu())
     nlp = spacy.load("en_core_web_trf")
     nlp.add_pipe("merge_entities", after="ner")
@@ -54,7 +58,29 @@ with app.setup:
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    # Data acquisition & preprocessing
+    # Hi there!
+
+    This is the notebook for our Machine Learning project.
+    <br>
+    Let's take a look at the table of content (it is also available on the right side of the screen):
+
+    I. Data Acquisition
+    - Download dataset
+    - Load whole dataset
+    - Preprocess email
+
+    II. Feature Engineering
+    - Additional features to consider
+
+    III. Training
+    - Train time
+    - Confusion time
+
+    IV. Model Analysis
+
+    **Let's get started!**
+
+    💡 Tips: Click ▶️ in the down right corner.
     """)
     return
 
@@ -62,20 +88,18 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ## Download dataset
+    # I. Data Acquisition
+
+    In this section, we obtain the data from the Apache's SpamAssassin Public Corpus and read them.
+    <br>
+    After that, we can load all emails into a DataFrame.
+
+    ## 1. Download dataset
     """)
     return
 
 
-@app.cell(hide_code=True)
-def _():
-    mo.md(r"""
-    ### Define dataset source
-    """)
-    return
-
-
-@app.cell(hide_code=True)
+@app.cell
 def _():
     dataset_source = {
         'easy_ham': {
@@ -100,16 +124,15 @@ def _():
         },
         'spam_2': {
             'url': "https://spamassassin.apache.org/old/publiccorpus/20050311_spam_2.tar.bz2",
-            'count': 1397,
+            'count': 1396,
             'is_spam': True
         }
     }
-    return (dataset_source,)
 
-
-@app.cell(hide_code=True)
-def _():
     dataset_dir = "./datasets/"
+
+    if not os.path.exists(dataset_dir):
+        os.mkdir(dataset_dir)
 
 
     def download_dataset(dataset_path: str, dataset_url: str):
@@ -120,27 +143,34 @@ def _():
 
         os.remove(os.path.join(dataset_path, "cmds"))
         os.remove(tmp)
-    return dataset_dir, download_dataset
 
 
-@app.cell(hide_code=True)
-def _():
     mo.md(r"""
-    ### Check dataset integrity
+    ### a. Define dataset source and download function
+
+    We have 5 files:
+
+    - easy_ham (2500 ham emails)
+    - easy_ham_2 (1400 ham emails)
+    - hard_ham (250 ham emails)
+    - spam (500 spam emails)
+    - spam_2 (1396 spam emails) *Although they said there were 1397 emails, there are only 1396 files in the extracted folder.*
+
+    Our download function will download the files and extract into `./datasets/` folder.
     """)
-    return
+    return dataset_dir, dataset_source, download_dataset
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(dataset_dir, dataset_source, download_dataset):
-    if not os.path.exists(dataset_dir):
-        os.mkdir(dataset_dir)
-
-
     for _dataset_name, _dataset_info in dataset_source.items():
         _dataset_path = os.path.join(dataset_dir, _dataset_name)
 
         if os.path.exists(_dataset_path):
+
+            if len(os.listdir(_dataset_path)) != _dataset_info['count']:
+                print(f"Dataset {_dataset_name} is missing some files, let's redownload.")
+                download_dataset(_dataset_name, _dataset_info['url'])
 
             for _filename in os.listdir(_dataset_path):
                 _file_path = os.path.join(_dataset_path, _filename)
@@ -151,7 +181,7 @@ def _(dataset_dir, dataset_source, download_dataset):
 
                     # Ignore wrong hash from source
                     if (_md5_hash != _provided_hash and _provided_hash != "244a63cd74c81123ef26129453e32c95"):
-                        mo.md(f"File {_filename} is corrupted, redownloading dataset {_dataset_name}...")
+                        print(f"Hash mismatch for {_filename}, redownloading dataset {_dataset_name}...")
 
                         download_dataset(_dataset_name, _dataset_info['url'])
                         os.remove(os.path.join(_dataset_path, _filename))
@@ -159,66 +189,76 @@ def _(dataset_dir, dataset_source, download_dataset):
                         break
 
         else:
-            mo.md(f"Dataset {_dataset_name} not found, downloading...")
+            print(f"Missing dataset {_dataset_name}, downloading it now...")
             download_dataset(_dataset_path, _dataset_info['url'])
-    return
 
 
-@app.cell(hide_code=True)
-def _():
     mo.md(r"""
-    ## Viewing some emails
-    """)
-    return
+    ### b. Check dataset integrity
 
+    The file name of each email is its MD5 hash.
+    <br>
+    We can use it to verify the integrity of the dataset.
 
-@app.cell(hide_code=True)
-def _():
-    mails = glob.glob("./datasets/*/*", recursive=True)
-    idx = mo.ui.number(start=0, stop=len(mails) - 1, label="Number")
-    return idx, mails
+    *Note: A file has incorrect hash from source, that's not our fault.*
 
-
-@app.cell(hide_code=True)
-def _(idx):
-    idx
-    return
-
-
-@app.cell(hide_code=True)
-def _(idx, mails):
-    mail = mailparser.parse_from_file(mails[idx.value])
-
-
-    mo.md(f"""
-    Path: `{mails[idx.value]}`
-
-    **{mail.subject}**
-
-    ---
-
-    {"---\n\n---".join(mail.text_plain)}
-
-    ---
-
-    {mail.text_html}
-
-    ---
-
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _():
-    mo.md(r"""
-    ## Load whole dataset
+    We will redownload the dataset if any file is corrupted or missing.
     """)
     return
 
 
 @app.cell
 def _():
+    mails = glob.glob("./datasets/*/*", recursive=True)
+    idx = mo.ui.number(start=0, stop=len(mails) - 1, label="Number")
+
+    mo.md(r"""
+    ### c. Viewing some emails
+
+    Let's take a look at some emails that we've got.
+
+    To save us some hassle, we won't be looking as raw email files (feel free to look at them, though!)
+    <br>
+    However, we will be using the `mailparser` library to parse the emails.
+
+    What we care about:
+
+    - Subject
+    - Plain text content
+    - HTML content
+
+    💡 Tips: Click "Fullscreen" or "Expand output" button (they will appear on the right side when you hover the box below).
+    <br>
+    Modify the number to view different emails.
+    """)
+    return idx, mails
+
+
+@app.cell
+def _(idx, mails):
+    mail = mailparser.parse_from_file(mails[idx.value])
+
+
+    mo.vstack([
+        idx,
+        mo.md(f"""
+    Path: `{mails[idx.value]}`
+
+    ```text
+    -- SUBJ --
+    {mail.subject}**
+    -- TEXT --
+    {"---\n\n---".join(mail.text_plain) if mail.text_plain else "<No plain text content>"}
+    -- HTML --
+    {mail.text_html if mail.text_html else "<No HTML content>"}
+    ```
+    """)
+    ])
+    return
+
+
+@app.cell
+def _(dataset_dir):
     dataset_checkpoints = {
         'orig': {
             'description': "Dataset without preprocessing (6046 entries)",
@@ -233,11 +273,7 @@ def _():
             'checksum': "d972cc17841c34ed3f73c1bd3e3fad62"
         }
     }
-    return (dataset_checkpoints,)
 
-
-@app.cell(hide_code=True)
-def _(dataset_checkpoints, dataset_dir):
     def load_dataset(checkpoint: str) -> pd.DataFrame:
         dataset_path = os.path.join(dataset_dir, f"{checkpoint}.gzip")
 
@@ -246,14 +282,40 @@ def _(dataset_checkpoints, dataset_dir):
 
         hash = hashlib.md5(open(dataset_path, 'rb').read()).hexdigest()
         if hash != dataset_checkpoints[checkpoint]['checksum']:
-            raise ValueError("Data corrupted, or outdated. Check checksum.")
+            print(f"Expected: {dataset_checkpoints[checkpoint]['checksum']}, got: {hash}")
+            raise ValueError("Dataset file broken.")
 
         data = pd.read_parquet(dataset_path)
         return data
-    return (load_dataset,)
+
+    def save_dataset(df: pd.DataFrame, checkpoint_name: str):
+        path = os.path.join(dataset_dir, f"{checkpoint_name}.gzip")
+        df.to_parquet(
+            path=path,
+            compression='gzip'
+        )
+
+        hash = hashlib.md5(open(path, 'rb').read()).hexdigest()
+        print(f"File: {path}\nMD5: {hash}")
+
+    
+    mo.md(r"""
+    ## 2. Load whole dataset
+
+    Now let's load everything into a DataFrame.
+
+    Let's understand why we need checkpoints.
+    <br>
+    We don't want to reprocess the dataset every time we run the notebook, so we will save the processed dataset into a file.
+    <br>
+    In subsequent runs, we can just load it back.
+
+    Here we have some checkpoints and some functions to save and load datasets.
+    """)
+    return load_dataset, save_dataset
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(dataset_dir, dataset_source, load_dataset, save_dataset):
     try:
         df = load_dataset('orig')
@@ -287,49 +349,35 @@ def _(dataset_dir, dataset_source, load_dataset, save_dataset):
                         data['html'].append("\n".join(_mail.text_html))
                         data['label'].append(int(_dataset_info['is_spam']))
 
-        mo.md(f"{str(e)}\nLoading from files...")
+        print(f"{str(e)}\nLoading from files...")
 
         df = pd.DataFrame(data)
         save_dataset(df, 'orig')
+
+
+    mo.md(r"""
+    We use `mailparser` to parse 6k+ emails into a DataFrame, and save it for later.
+
+    We will only do that when the checkpoint isn't available, or is somehow broken.
+    """)
     return (df,)
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ### Save dataset
-    """)
-    return
+    ## 3. Preprocess email
 
+    A little rant about how ML works in this problem:
 
-@app.cell(hide_code=True)
-def _(dataset_dir):
-    def save_dataset(df: pd.DataFrame, checkpoint_name: str):
-        path = os.path.join(dataset_dir, f"{checkpoint_name}.gzip")
-        df.to_parquet(
-            path=path,
-            compression='gzip'
-        )
+    - Emails are broken into 'tokens'. Tokens are words (in simple form), or special ones.
+    - The tokens are the features for the model.
 
-        hash = hashlib.md5(open(path, 'rb').read()).hexdigest()
-        print(f"File: {path}\nMD5: {hash}")
-    return (save_dataset,)
+    Here's what we need to do:
 
-
-@app.cell(hide_code=True)
-def _():
-    hashlib.md5(open("./datasets/orig.gzip", 'rb').read()).hexdigest()
-    return
-
-
-@app.cell(hide_code=True)
-def _():
-    mo.md(r"""
-    ## Preprocess email
-
-    1. Remove duplicates from raw dataset
+    1. Remove duplicates from raw dataset.
     2. Find and replace certain tokens with regex (email, addresses, phone number, etc.)
-    3. Find and replace proper noun tokens
+    3. Find and replace proper noun tokens (entities).
     """)
     return
 
@@ -337,7 +385,7 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ### Data exploration notes
+    ### a. Data exploration notes
 
     - High correlation: HTML usage and spam
     - Dataset artifact: a lot of spam emails have this:
@@ -368,35 +416,38 @@ def _():
     return
 
 
-@app.cell(hide_code=True)
-def _():
-    mo.md(r"""
-    ### Remove duplicates
-    """)
-    return
-
-
 @app.cell
 def _(df):
     deduplicated_df = df.drop_duplicates(subset=['text', 'html'])
+
+
+    mo.md(r"""
+    ### b. Remove duplicates
+    """)
     return (deduplicated_df,)
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ### Preprocess preview
+    ### c. Preprocess preview
+
+    This is merely the scratchpad for whatever we want to do with these emails.
+
+    Change the number to view different emails, just like above.
+    <br>
+    *(Also don't forget to use fullscreen or expand output)*
+
+    The first column contains subject + plain text + parsed HTML (more information down below).
+    <br>
+    The second column shows how each token is transformed (in `nlp_pipeline` section down below).
+    <br>
+    The third one shows the results.
     """)
     return
 
 
 @app.cell
-def _(idx):
-    idx
-    return
-
-
-@app.cell(hide_code=True)
 def _(
     artifact_cleanup,
     deduplicated_df,
@@ -414,79 +465,131 @@ def _(
     _merged_text = merge_text_html(_entry['text'],_entry['html'])
     _text = f"{_clean_subj}\n{_merged_text}"
 
-    #_text_2 = random_cleanup(_text)
-    _text_3 = artifact_cleanup(_text)
+    _text_2 = artifact_cleanup(_text)
 
-    _doc = nlp(_text_3)
-    _newtext = nlp_pipeline(_doc)
+    _doc = nlp(_text_2)
+    _debug_text = nlp_pipeline(_doc, debug=True)
+    _new_text = nlp_pipeline(_doc)
 
 
     _table2 = mo.ui.table(
         data=[{
-            'Token': token.text,
-            'Lemma': token.lemma_,
-            'PoS': token.pos_,
-            'Tag': token.tag_,
-            'Tag (explain)': spacy.explain(token.tag_),
-            'Entity': token.ent_type_,
-            'Stop word': token.is_stop,
-            'URL': token.like_url,
-            'Email': token.like_email
+            "Token": token.text,
+            "Lemma": token.lemma_,
+            "PoS": token.pos_,
+            "Tag": token.tag_,
+            "Entity": token.ent_type_,
+            "Stop word": token.is_stop,
+            "URL": token.like_url,
+            "Email": token.like_email
         } for token in _doc],
-        pagination=True
-    )
-
-    _table3 = mo.ui.table(
-        data=[{
-            'Entity': ent.text,
-            'Label': ent.label_
-        } for ent in _doc.ents],
-        pagination=True
+        label="Tokens",
+        pagination=True,
+        wrapped_columns=["Token", "Lemma"]
     )
 
 
-    if len(_newtext) == 0:
-        _newtext = "_<EMPTY>_"
+    if len(_new_text) == 0:
+        _new_text = "_<EMPTY>_"
 
-    _results = _tfidf.fit_transform([_newtext])
+    _results = _tfidf.fit_transform([_new_text])
     _vocab = [{'word': _word, 'idx': _idx} for _word, _idx in _tfidf.vocabulary_.items()]
-    _table = mo.ui.table(data=_vocab, pagination=True)
+    _table = mo.ui.table(data=_vocab, label="TF-IDF", pagination=True)
 
 
     mo.vstack(
         [
+            idx,
             mo.md(f"Label: {"Ham" if _entry['label'] == 0 else "Spam"}"),
             mo.hstack(
                 [
                     mo.md(f"{_clean_subj}\n{_merged_text}".replace("\n", " ")),
-                    mo.md(_text_3.replace("\n", " ")),
-                    mo.md(_newtext.replace("\n", " "))
+                    mo.md(_debug_text.replace("\n", " ")),
+                    mo.md(_new_text.replace("\n", " "))
                 ],
-                widths="equal"
+                widths=[1, 1.2, 0.9]
             ),
-            mo.md(f"Stop word ratio: {len([tok for tok in _doc if tok.is_stop]) / _doc.__len__()}"),
             mo.hstack([
                 _table,
-                _table2,
-                _table3
-            ])
+                _table2
+            ], widths=[1, 5]),
+            mo.md(f"Stop word ratio: {len([tok for tok in _doc if tok.is_stop]) / _doc.__len__()}"),
         ])
     return
 
 
-@app.cell(hide_code=True)
-def _():
+@app.cell
+def _(deduplicated_df, load_dataset, pre_cleanup, save_dataset):
+    try:
+        #raise(ValueError("Code changed. Rebuilding dataset..."))
+        pre_cleaned_df = load_dataset('pre_cleaned')
+
+    except (FileNotFoundError, ValueError) as e:
+        tqdm.pandas(desc="Running pre_cleanup", ncols=100)
+
+        pre_cleaned_df = pd.DataFrame({
+            'text': deduplicated_df.progress_apply(
+                lambda x: pre_cleanup(x['subject'], x['text'], x['html']),
+                axis=1
+            ),
+            'label': deduplicated_df['label']
+        })
+
+        save_dataset(pre_cleaned_df, 'pre_cleaned')
+
+
     mo.md(r"""
-    ### Pre-cleanup
+    ### d. Pre cleanup
+
+    Find and replace certain tokens with regex (email, addresses, phone number, etc.)
     """)
-    return
+    return (pre_cleaned_df,)
+
+
+@app.cell
+def _(artifact_cleanup, merge_text_html, subject_cleanup):
+    def pre_cleanup(subject: str, text: str, html: str):
+        clean_subj = subject_cleanup(subject)
+        merged_text = merge_text_html(text, html)
+
+        pass_1 = f"{clean_subj}\n{merged_text}"
+        pass_2 = artifact_cleanup(pass_1)
+
+        return pass_2
+    return (pre_cleanup,)
+
+
+@app.cell
+def _(html_cleanup):
+    def merge_text_html(text: str, html: str, threshold = 0.95) -> str:
+        if len(html) != 0:
+            html = html_cleanup(html)
+
+            # Some texts has leftover HTML somehow
+            text = html_cleanup(text)
+
+            if len(text) == 0:
+                return html
+
+            else:
+                similarity = cosine_similarity(text, html)
+
+                if similarity >= threshold:
+                    return text
+
+                else:
+                    return f"{text}\n{html}"
+
+        else:
+            return html_cleanup(text)
+    return (merge_text_html,)
 
 
 @app.cell
 def _():
-    url_pattern = re.compile(
-        r"((http|ftp|https):\/\/)?([\w_-]+(?:\.[\w_-]+)*\.[a-zA-Z_-][\w_-]+)([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])"
-    )
+    # url_pattern = re.compile(
+    #     r"((http|ftp|https):\/\/)?([\w_-]+(?:\.[\w_-]+)*\.[a-zA-Z_-][\w_-]+)([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])"
+    # )
 
     # Remove mailing list information
     subject_cleanup_pattern = re2.compile(
@@ -518,7 +621,7 @@ def _():
     return artifact_cleanup, html_cleanup, subject_cleanup
 
 
-@app.function(hide_code=True)
+@app.function
 def cosine_similarity(s1: str, s2: str) -> float:
     if len(s1) == 0 or len(s2) == 0:
         return 0.0
@@ -532,109 +635,6 @@ def cosine_similarity(s1: str, s2: str) -> float:
     magnitude1 = sqrt(sum(count ** 2 for count in vec1.values()))
     magnitude2 = sqrt(sum(count ** 2 for count in vec2.values()))
     return dot_product / (magnitude1 * magnitude2)
-
-
-@app.cell
-def _(html_cleanup):
-    def merge_text_html(text: str, html: str, threshold = 0.95) -> str:
-        if len(html) != 0:
-            html = html_cleanup(html)
-
-            # Some texts has leftover HTML somehow
-            text = html_cleanup(text)
-        
-            if len(text) == 0:
-                return html
-
-            else:
-                similarity = cosine_similarity(text, html)
-
-                if similarity >= threshold:
-                    return text
-
-                else:
-                    return f"{text}\n{html}"
-
-        else:
-            return html_cleanup(text)
-    return (merge_text_html,)
-
-
-@app.cell(hide_code=True)
-def _(artifact_cleanup, merge_text_html, subject_cleanup):
-    def pre_cleanup(subject: str, text: str, html: str):
-        clean_subj = subject_cleanup(subject)
-        merged_text = merge_text_html(text, html)
-
-        pass_1 = f"{clean_subj}\n{merged_text}"
-        pass_2 = artifact_cleanup(pass_1)
-
-        return pass_2
-    return (pre_cleanup,)
-
-
-@app.cell(hide_code=True)
-def _(deduplicated_df, load_dataset, pre_cleanup, save_dataset):
-    try:
-        #raise(ValueError("Code changed. Rebuilding dataset..."))
-        pre_cleaned_df = load_dataset('pre_cleaned')
-
-    except (FileNotFoundError, ValueError) as e:
-        tqdm.pandas(desc="Running pre_cleanup", ncols=100)
-
-        pre_cleaned_df = pd.DataFrame({
-            'text': deduplicated_df.progress_apply(
-                lambda x: pre_cleanup(x['subject'], x['text'], x['html']),
-                axis=1
-            ),
-            'label': deduplicated_df['label']
-        })
-
-        save_dataset(pre_cleaned_df, 'pre_cleaned')
-    return (pre_cleaned_df,)
-
-
-@app.cell(hide_code=True)
-def _():
-    mo.md(r"""
-    ### Post cleanup
-    """)
-    return
-
-
-@app.cell
-def _():
-    # Email matching
-    email_pattern = re2.compile(
-        r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-    )
-
-    pgp_signature_pattern = re2.compile(
-        r"(?s)-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----"
-    )
-    return email_pattern, pgp_signature_pattern
-
-
-@app.cell
-def _():
-    import torch
-
-    MAX_CHAR_LENGTH = 15000
-
-
-    def process_batches(nlp, texts, batch_size=None):
-        for i, doc in enumerate(nlp.pipe(
-            texts,
-            batch_size=batch_size,
-            disable=["parser"]
-        )):
-            doc._.trf_data = None
-
-            yield doc
-
-            if i % batch_size == 0:
-                torch.cuda.empty_cache()
-    return MAX_CHAR_LENGTH, process_batches
 
 
 @app.cell
@@ -686,39 +686,51 @@ def _(
         post_cleaned_df = post_cleaned_df[post_cleaned_df['text'] != ""].reset_index(drop=True)
 
         save_dataset(post_cleaned_df, 'post_cleaned')
+
+
+    mo.md(r"""
+    ### e. Post cleanup
+
+    Find and replace proper noun tokens (entities).
+    """)
     return (post_cleaned_df,)
 
 
-@app.function(hide_code=True)
-def token_processor(token: spacy.tokens.Token) -> str:
-    if token.is_stop:
-        return ""
+@app.cell
+def _():
+    import torch
 
-    if token.like_url:
-        return "_url_"
-    if token.like_email:
-        return "_email_"
-
-    if token.ent_type_ not in ["", "CARDINAL", "ORDINAL"]:
-        return f"_{token.ent_type_}_".lower()
-
-    if token.pos_ == "PROPN":
-        return "_propn_"
-    if token.pos_ == "NUM":
-        return "_num_"
-
-    if token.tag_ == "LS":
-        return ""
-    if (token.pos_ == "X") and (token.tag_ == "FW"):
-        return "_foreign_"
-
-    else:
-        return token.lemma_
+    MAX_CHAR_LENGTH = 15000
 
 
-@app.cell(hide_code=True)
-def _(email_pattern, pgp_signature_pattern):
-    def nlp_pipeline(doc: spacy.tokens.Doc, stop_threshold = 0.01) -> str:
+    def process_batches(nlp, texts, batch_size=None):
+        for i, doc in enumerate(nlp.pipe(
+            texts,
+            batch_size=batch_size,
+            disable=["parser"]
+        )):
+            doc._.trf_data = None
+
+            yield doc
+
+            if i % batch_size == 0:
+                torch.cuda.empty_cache() # VRAM explosion
+    return MAX_CHAR_LENGTH, process_batches
+
+
+@app.cell
+def _():
+    # Email matching
+    email_pattern = re2.compile(
+        r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+    )
+
+    pgp_signature_pattern = re2.compile(
+        r"(?s)-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----"
+    )
+
+
+    def nlp_pipeline(doc: spacy.tokens.Doc, stop_threshold = 0.01, debug = False) -> str:
         with doc.retokenize() as retokenizer:
             for match in email_pattern.finditer(doc.text):
                 span = doc.char_span(
@@ -757,23 +769,48 @@ def _(email_pattern, pgp_signature_pattern):
             return ""
 
         return " ".join(
-            [token_processor(token) for token in doc]
+            [token_processor(token, debug) for token in doc]
         )
     return (nlp_pipeline,)
 
 
-@app.cell(hide_code=True)
-def _():
-    mo.md(r"""
-    # Features engineering
-    """)
-    return
+@app.function
+def token_processor(token: spacy.tokens.Token, debug: bool = False) -> str:
+    def debug_fmt(tag: str) -> str:
+        spaced_text = "~ ~".join(token.text.split())
+        return f"{tag} ~<-{spaced_text}~"
+
+    if token.is_stop or token.tag_ == "LS":
+        return "" if not debug else f"~~{token.text}~~"
+
+    if token.like_url:
+        return "_url_" if not debug else debug_fmt("_url_")
+    
+    if token.like_email:
+        return "_email_" if not debug else debug_fmt("_email_")
+
+    if token.ent_type_ and token.ent_type_ not in ["CARDINAL", "ORDINAL"]:
+        tag = f"_{token.ent_type_}_".lower()
+        return tag if not debug else debug_fmt(tag)
+
+    if token.pos_ == "PROPN":
+        return "_propn_" if not debug else debug_fmt("_propn_")
+    
+    if token.pos_ == "NUM":
+        return "_num_" if not debug else debug_fmt("_num_")
+    
+    if token.pos_ == "X" and token.tag_ == "FW":
+        return "_foreign_" if not debug else debug_fmt("_foreign_")
+
+    return token.lemma_
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ## Additional features to consider
+    # II. Features engineering
+
+    ## 1. Additional features to consider
 
     - ~~Contains HTML (boolean)~~
     - Number of links (share the same token with links in text)
@@ -786,47 +823,37 @@ def _():
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _():
+    def calc_capitals_ratio(text: str) -> float:
+        if len(text) == 0:
+            return 0.0
+
+        capitals_count = sum(1 for c in text if c.isupper())
+        return capitals_count / len(text)
+
+
     mo.md(r"""
-    ### Capitals ratio
+    ### a. Capitals ratio
+
+    I didn't use this yet, though.
     """)
     return
-
-
-@app.function
-def calc_capitals_ratio(text: str) -> float:
-    if len(text) == 0:
-        return 0.0
-
-    capitals_count = sum(1 for c in text if c.isupper())
-    return capitals_count / len(text)
-
-
-@app.cell(hide_code=True)
-def _():
-    mo.md(r"""
-    ### Number of special characters
-    """)
-    return
-
-
-@app.function
-def count_special_chars(text):
-    special_chars = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~"
-    return sum(1 for char in text if char in special_chars)
 
 
 @app.cell
-def _(df):
-    df['text'].apply(count_special_chars)
-    return
-
-
-@app.cell(hide_code=True)
 def _():
+    def count_special_chars(text):
+        special_chars = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~"
+        return sum(1 for char in text if char in special_chars)
+
+    #df['text'].apply(count_special_chars)
+
+
     mo.md(r"""
-    ### TF-IDF
+    ### b. Number of special characters
+
+    On second thought..., I skipped it.
     """)
     return
 
@@ -838,15 +865,14 @@ def _(post_cleaned_df):
     # Fit the vectorizer to the data and transform it into a TF-IDF matrix
     tfidf_matrix = vectorizer.fit_transform(post_cleaned_df['text'])
     tfidf_df = pd.DataFrame(tfidf_matrix.toarray(), columns=vectorizer.get_feature_names_out())
-    return (tfidf_df,)
 
 
-@app.cell(hide_code=True)
-def _():
     mo.md(r"""
-    ## Train time
+    ### c. TF-IDF
+
+    Code copied from GeeksForGeeks:
     """)
-    return
+    return (tfidf_df,)
 
 
 @app.cell
@@ -860,13 +886,22 @@ def _(post_cleaned_df, tfidf_df):
     logreg.fit(X_train, y_train)
 
     y_pred = logreg.predict(X_test)
+
+
+    mo.md(r"""
+    # III. Model training
+
+    ## 1. Train time
+
+    Here, we train our Logistic Regression model with 75-25 train-test split.
+    """)
     return logreg, y_pred, y_test
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ## Confusion time
+    ## 2. Confusion time
     """)
     return
 
@@ -899,10 +934,16 @@ def _(y_pred, y_test):
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _():
     mo.md(r"""
-    ## Model analysis
+    # IV. Model analysis
+
+    We take a look into our model and see its decision-making.
+
+    ## 1. Important words
+
+    The charts show top 20 words for words that are likely in ham and spam emails.
     """)
     return
 
@@ -925,11 +966,8 @@ def _(logreg, tfidf_df):
     ])
 
     plot_df['type'] = plot_df['weight'].apply(lambda x: 'Spam' if x > 0 else 'Ham')
-    return top_ham, top_spam
 
 
-@app.cell
-def _(top_ham, top_spam):
     mo.hstack(
         [
             mo.ui.altair_chart(
@@ -960,7 +998,7 @@ def _(top_ham, top_spam):
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _():
     mo.md(r"""
     # Random stuff
@@ -980,7 +1018,7 @@ def _(pre_cleaned_df):
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _():
     mo.md(r"""
     ## Beautiful Soup playground
@@ -988,14 +1026,14 @@ def _():
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _():
     html_input = mo.ui.text_area(placeholder="Paste HTML code...", full_width=True)
     html_input 
     return (html_input,)
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _(html_input):
     soup = BeautifulSoup(html_input.value, 'html5lib')
     cleaned_html = soup.get_text(separator=" ", strip=True)
@@ -1003,7 +1041,7 @@ def _(html_input):
     return
 
 
-@app.cell(hide_code=True)
+@app.cell
 def _():
     mo.md(r"""
     ## RE2 playground
