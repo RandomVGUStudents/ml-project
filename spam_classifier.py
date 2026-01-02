@@ -7,7 +7,7 @@ app = marimo.App(
     auto_download=["ipynb", "html"],
 )
 
-with app.setup:
+with app.setup(hide_code=True):
     import marimo as mo
 
     # Miscellaneous
@@ -298,7 +298,7 @@ def _(dataset_dir):
         hash = hashlib.md5(open(path, 'rb').read()).hexdigest()
         print(f"File: {path}\nMD5: {hash}")
 
-    
+
     mo.md(r"""
     ## 2. Load whole dataset
 
@@ -376,8 +376,8 @@ def _():
     Here's what we need to do:
 
     1. Remove duplicates from raw dataset.
-    2. Find and replace certain tokens with regex (email, addresses, phone number, etc.)
-    3. Find and replace proper noun tokens (entities).
+    2. Find and replace certain tokens with regex.
+    3. Find and replace tokens using Natural Language Processing (NLP).
     """)
     return
 
@@ -541,7 +541,17 @@ def _(deduplicated_df, load_dataset, pre_cleanup, save_dataset):
     mo.md(r"""
     ### d. Pre cleanup
 
-    Find and replace certain tokens with regex (email, addresses, phone number, etc.)
+    Find and replace certain tokens with regex.
+
+    For now, in some emails' subject line, there is mailing list information. E.g.: [ILUG], or [zzzteana].
+    <br>
+    This should be removed, otherwise the model would learn them as ham indicator.
+
+    It's not technically wrong, but it doesn't generalize. Those mailing lists are specific to this dataset.
+
+    Another artifact is `--DeathToSpamDeathToSpamDeathToSpam--`.
+    <br>
+    It is suspected to be related to the spam report campaign, where people forward spam emails to the collector, who built this dataset.
     """)
     return (pre_cleaned_df,)
 
@@ -556,11 +566,16 @@ def _(artifact_cleanup, merge_text_html, subject_cleanup):
         pass_2 = artifact_cleanup(pass_1)
 
         return pass_2
+
+
+    mo.md(r"""
+    This is the `pre_cleanup` function. It will remove the mailing list information, merge plain text and HTML into a single container, and remove artifact.
+    """)
     return (pre_cleanup,)
 
 
 @app.cell
-def _(html_cleanup):
+def _(cosine_similarity, html_cleanup):
     def merge_text_html(text: str, html: str, threshold = 0.95) -> str:
         if len(html) != 0:
             html = html_cleanup(html)
@@ -582,6 +597,15 @@ def _(html_cleanup):
 
         else:
             return html_cleanup(text)
+
+
+    mo.md(r"""
+    Some emails have either plain text or HTML content, or both.
+    <br>
+    Some emails have the same content in both plain text and HTML.
+
+    If the plain text and HTML content have a [cosine similarity](https://www.geeksforgeeks.org/python/python-similarity-metrics-of-strings/) of greater than `threshold`, they will be considered to be the same.
+    """)
     return (merge_text_html,)
 
 
@@ -618,34 +642,50 @@ def _():
 
         # Artificially add _URL_ tokens
         return soup.get_text(separator=" ", strip=True) + " google.com" * len(soup.find_all('a'))
+
+
+    mo.md(r"""
+    While parsing HTML content, links (`<a>` tags) will be lost.
+    <br>
+    The function adds "google.com" for each link found, which will be interpreted as an `_url_` token.
+    """)
     return artifact_cleanup, html_cleanup, subject_cleanup
 
 
-@app.function
-def cosine_similarity(s1: str, s2: str) -> float:
-    if len(s1) == 0 or len(s2) == 0:
-        return 0.0
+@app.cell
+def _():
+    def cosine_similarity(s1: str, s2: str) -> float:
+        if len(s1) == 0 or len(s2) == 0:
+            return 0.0
 
-    # Convert strings to character frequency vectors
-    vec1 = Counter(s1)
-    vec2 = Counter(s2)
+        # Convert strings to character frequency vectors
+        vec1 = Counter(s1)
+        vec2 = Counter(s2)
 
-    # Calculating cosine similarity
-    dot_product = sum(vec1[ch] * vec2[ch] for ch in vec1)
-    magnitude1 = sqrt(sum(count ** 2 for count in vec1.values()))
-    magnitude2 = sqrt(sum(count ** 2 for count in vec2.values()))
-    return dot_product / (magnitude1 * magnitude2)
+        # Calculating cosine similarity
+        dot_product = sum(vec1[ch] * vec2[ch] for ch in vec1)
+        magnitude1 = sqrt(sum(count ** 2 for count in vec1.values()))
+        magnitude2 = sqrt(sum(count ** 2 for count in vec2.values()))
+        return dot_product / (magnitude1 * magnitude2)
+
+
+    mo.md(r"""
+    From the GeeksForGeeks page mentioned above.
+    """)
+    return (cosine_similarity,)
 
 
 @app.cell
 def _(
-    MAX_CHAR_LENGTH,
     load_dataset,
     nlp_pipeline,
     pre_cleaned_df,
     process_batches,
     save_dataset,
 ):
+    MAX_CHAR_LENGTH = 15000
+
+
     try:
         #raise(ValueError("Code changed. Rebuilding dataset..."))
         post_cleaned_df = load_dataset('post_cleaned')
@@ -691,7 +731,9 @@ def _(
     mo.md(r"""
     ### e. Post cleanup
 
-    Find and replace proper noun tokens (entities).
+    Find and replace tokens with Natural Language Processing (NLP).
+
+    First, we need to truncate long emails. Here, a maximum of 15k characters for each email is enforced.
     """)
     return (post_cleaned_df,)
 
@@ -699,9 +741,6 @@ def _(
 @app.cell
 def _():
     import torch
-
-    MAX_CHAR_LENGTH = 15000
-
 
     def process_batches(nlp, texts, batch_size=None):
         for i, doc in enumerate(nlp.pipe(
@@ -713,13 +752,18 @@ def _():
 
             yield doc
 
-            if i % batch_size == 0:
+            if (i % batch_size == 0) and (torch.cuda.is_available()):
                 torch.cuda.empty_cache() # VRAM explosion
-    return MAX_CHAR_LENGTH, process_batches
+
+
+    mo.md(r"""
+    We use spaCy library for this job. We split the texts into `batch_size`, and clean up GPU VRAM (if it's available).
+    """)
+    return (process_batches,)
 
 
 @app.cell
-def _():
+def _(token_processor):
     # Email matching
     email_pattern = re2.compile(
         r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
@@ -771,38 +815,56 @@ def _():
         return " ".join(
             [token_processor(token, debug) for token in doc]
         )
+
+
+    mo.md(r"""
+    There are two things that the spaCy transformer model struggles with: email addresses and PGP signature.
+    <br>
+    We give it some help using regex. Then we can set entity type for found items as "EMAIL" or "PGP_SIG".
+
+    About [stop words](https://en.wikipedia.org/wiki/Stop_word), if there are so few in the email, it's not normal. We set a ratio threshold of 0.01.
+    <br>
+    In this processing step, we simply ignore such emails. In the real application, we might directly conclude the email to be spam.
+    """)
     return (nlp_pipeline,)
 
 
-@app.function
-def token_processor(token: spacy.tokens.Token, debug: bool = False) -> str:
-    def debug_fmt(tag: str) -> str:
-        spaced_text = "~ ~".join(token.text.split())
-        return f"{tag} ~<-{spaced_text}~"
+@app.cell
+def _():
+    def token_processor(token: spacy.tokens.Token, debug: bool = False) -> str:
+        def debug_fmt(tag: str) -> str:
+            spaced_text = "~ ~".join(token.text.split())
+            return f"{tag} ~<-{spaced_text}~"
 
-    if token.is_stop or token.tag_ == "LS":
-        return "" if not debug else f"~~{token.text}~~"
+        if token.is_stop or token.tag_ == "LS":
+            return "" if not debug else f"~~{token.text}~~"
 
-    if token.like_url:
-        return "_url_" if not debug else debug_fmt("_url_")
-    
-    if token.like_email:
-        return "_email_" if not debug else debug_fmt("_email_")
+        if token.like_url:
+            return "_url_" if not debug else debug_fmt("_url_")
 
-    if token.ent_type_ and token.ent_type_ not in ["CARDINAL", "ORDINAL"]:
-        tag = f"_{token.ent_type_}_".lower()
-        return tag if not debug else debug_fmt(tag)
+        if token.like_email:
+            return "_email_" if not debug else debug_fmt("_email_")
 
-    if token.pos_ == "PROPN":
-        return "_propn_" if not debug else debug_fmt("_propn_")
-    
-    if token.pos_ == "NUM":
-        return "_num_" if not debug else debug_fmt("_num_")
-    
-    if token.pos_ == "X" and token.tag_ == "FW":
-        return "_foreign_" if not debug else debug_fmt("_foreign_")
+        if token.ent_type_ and token.ent_type_ not in ["CARDINAL", "ORDINAL"]:
+            tag = f"_{token.ent_type_}_".lower()
+            return tag if not debug else debug_fmt(tag)
 
-    return token.lemma_
+        if token.pos_ == "PROPN":
+            return "_propn_" if not debug else debug_fmt("_propn_")
+
+        if token.pos_ == "NUM":
+            return "_num_" if not debug else debug_fmt("_num_")
+
+        if token.pos_ == "X" and token.tag_ == "FW":
+            return "_foreign_" if not debug else debug_fmt("_foreign_")
+
+        return token.lemma_
+
+
+    mo.md(r"""
+    We replace certain tokens with the desired classification. It is demonstrated in "Preprocess preview" section.
+    """)
+    return (token_processor,)
 
 
 @app.cell(hide_code=True)
@@ -944,6 +1006,10 @@ def _():
     ## 1. Important words
 
     The charts show top 20 words for words that are likely in ham and spam emails.
+
+    ## 2. Email test
+
+    I want to write another section to see how each word in an email contributes to the final conclusion. Lazy I am, though.
     """)
     return
 
